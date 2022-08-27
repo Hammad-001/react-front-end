@@ -1,5 +1,5 @@
 import favicon from '../../assets/images/favicon.ico'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const PublicNavbar = () => {
     return (
@@ -34,8 +34,13 @@ const PublicNavbar = () => {
 }
 
 const PrivateNavbar = () => {
+    const navigate = useNavigate();
+
     const handleLogout = () => {
-        ;
+        localStorage.removeItem('email')
+        localStorage.removeItem('token')
+        localStorage.removeItem('usertype')
+        navigate("/login", { replace: true })
     }
     return (
         <>
@@ -56,13 +61,13 @@ const PrivateNavbar = () => {
                             </li>
                             <li className="nav-item dropdown">
                                 <NavLink className="nav-link dropdown-toggle" to="/dashboard/profile" role="button" data-bs-toggle="dropdown" aria-expanded="false">Available Actions</NavLink>
-                                <ul className="dropdown-menu bg-dark">
+                                <ul className="dropdown-menu bg-dark text-center">
                                     <li><NavLink className="nav-link" to="/dashboard/courses">Courses</NavLink></li>
                                     <li><NavLink className="nav-link" to="/dashboard/teacehrs">Teachers</NavLink></li>
                                     <li><NavLink className="nav-link" to="/dashboard/students">Teachers</NavLink></li>
                                     <li><NavLink className="nav-link" to="/dashboard/settings">Settings</NavLink></li>
                                     <li><hr className="dropdown-divider" /></li>
-                                    <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
+                                    <li><button className="btn btn-dark w-100 nav-link" onClick={handleLogout}>Logout</button></li>
                                 </ul>
                             </li>
                         </ul>
