@@ -18,16 +18,17 @@ import Dashboard from './components/User/Dashboard/Dashboard';
 import Unauthorized from './components/User/Unauthorized';
 import PageNotFound from './components/pages/PageNotFound';
 
-import useAuth from './components/User/useAuth';
+import AuthContext from './components/User/UserAuth';
+import { useContext } from 'react';
 
 const AllRoles = {
     'Admin': 'admin',
-    'Teacher': 'Teacher',
+    'Teacher': 'teacher',
     'Student': 'student'
 }
 
 function App(props) {
-    const { auth } = useAuth();
+    const { auth } = useContext(AuthContext);
 
     return (
         <BrowserRouter>
@@ -50,6 +51,9 @@ function App(props) {
                     <Route path="/dashboard/courses" element={<Dashboard />} />
                     <Route path="/dashboard/students" element={<Dashboard />} />
                     <Route path="/dashboard/teachers" element={<Dashboard />} />
+                </Route>
+                <Route element={<RequireAuth allowedRoles={[AllRoles.Student]} />}>
+                    <Route path="/dashboard/courses" element={<Dashboard />} />
                 </Route>
                 <Route path="/unauthorized" element={<Unauthorized />} />
                 <Route path="*" element={<PageNotFound />} />

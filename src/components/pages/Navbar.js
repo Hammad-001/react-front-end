@@ -1,5 +1,10 @@
 import favicon from '../../assets/images/favicon.ico'
 import { NavLink, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useContext } from 'react';
+import AuthContext from '../User/UserAuth';
+import setAxiosAuthToken from '../api/axios';
+
 
 const PublicNavbar = () => {
     return (
@@ -35,12 +40,22 @@ const PublicNavbar = () => {
 
 const PrivateNavbar = () => {
     const navigate = useNavigate();
+    const { auth, setAuth } = useContext(AuthContext);
 
-    const handleLogout = () => {
-        localStorage.removeItem('email')
-        localStorage.removeItem('token')
-        localStorage.removeItem('usertype')
-        navigate("/login", { replace: true })
+    const handleLogout = async () => {
+        setAxiosAuthToken(auth.token);
+
+        axios.post('http://localhost:8000/api/users/logout/')
+            .then(response => {
+                localStorage.removeItem('email')
+                localStorage.removeItem('token')
+                localStorage.removeItem('usertype')
+                setAuth({})
+                navigate("/login", { replace: true })
+
+            }).catch(err => {
+                alert("Some Internal Server Error Occured! \n Cannot logout!!")
+            })
     }
     return (
         <>
@@ -63,8 +78,8 @@ const PrivateNavbar = () => {
                                 <NavLink className="nav-link dropdown-toggle" to="/dashboard/profile" role="button" data-bs-toggle="dropdown" aria-expanded="false">Available Actions</NavLink>
                                 <ul className="dropdown-menu bg-dark text-center">
                                     <li><NavLink className="nav-link" to="/dashboard/courses">Courses</NavLink></li>
-                                    <li><NavLink className="nav-link" to="/dashboard/teacehrs">Teachers</NavLink></li>
-                                    <li><NavLink className="nav-link" to="/dashboard/students">Teachers</NavLink></li>
+                                    <li><NavLink className="nav-link" to="/dashboard/teachers">Teachers</NavLink></li>
+                                    <li><NavLink className="nav-link" to="/dashboard/students">Students</NavLink></li>
                                     <li><NavLink className="nav-link" to="/dashboard/settings">Settings</NavLink></li>
                                     <li><hr className="dropdown-divider" /></li>
                                     <li><button className="btn btn-dark w-100 nav-link" onClick={handleLogout}>Logout</button></li>

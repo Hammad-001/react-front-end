@@ -1,13 +1,15 @@
 import React from 'react'
 import { PrivateNavbar } from '../../pages/Navbar'
-import useAuth from '../useAuth';
+import { useContext } from 'react';
+import AuthContext from '../UserAuth';
 
 const Dashboard = () => {
-  const { auth } = useAuth();
+  const { auth } = useContext(AuthContext);
   return (
     <>
       <PrivateNavbar auth={auth} />
-      <h1>I am Dashboard!</h1>
+      <h1>Dashboard</h1>
+
     </>
   )
 }

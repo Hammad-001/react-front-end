@@ -1,59 +1,48 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import axios from '../api/axios';
-import useAuth from '../User/useAuth'
-
-const LOGIN_URL = "login/";
+import axios from 'axios';
+import AuthContext from '../User/UserAuth';
+import { useContext } from 'react';
 
 const Login = (props) => {
-    const { setAuth } = useAuth();
-    const navigate = useNavigate();
+    const { setAuth } = useContext(AuthContext);
+
     const location = useLocation();
+    const navigate = useNavigate();
     let from = location.state?.from?.pathname || "/";
-
-
     const [error, setError] = useState(<p className="text-light">Please Enter Your Details!</p>);
-
-    async function getLogin(email, password) {
-        axios.post(LOGIN_URL, { email: email, password: password })
-            .then(response => {
-                const token = response.data.token;
-                const usertype = response.data.usertype;
-
-                setAuth({ email, password, token, usertype })
-
-                localStorage.setItem('email', email)
-                localStorage.setItem('token', token)
-                localStorage.setItem('usertype', usertype)
-
-                document.getElementById('login-form').reset();
-                navigate(from, { replace: true });
-            })
-            .catch(err => {
-                console.log(err.response)
-                if (err?.response?.status === 404) {
-                    setError(<p className="text-danger">{err?.response?.data?.error}!</p>)
-                }
-            });
-        return null;
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const form = new FormData(e.currentTarget);
-        const data = {
-            email: form.get('email'),
-            password: form.get('password')
-        }
+        const email = form.get('email');
+        const password = form.get('password');
 
-        if (data.email === "" && data.password === "") {
+        if (email === "" && password === "") {
             setError(<p className="text-danger">All Fields are Required!</p>)
-        } else if (data.email === "") {
+        } else if (email === "") {
             setError(<p className="text-warning">Please Enter Your Email!</p>)
-        } else if (data.password === "") {
+        } else if (password === "") {
             setError(<p className="text-warning">Please Enter Your Password!</p>)
         } else {
-            getLogin(data.email, data.password);
+            axios.post('http://localhost:8000/api/users/login/', { email: email, password: password })
+                .then(response => {
+                    const token = response.data.token;
+                    const usertype = response.data.usertype;
+
+                    setAuth({ email, password, token, usertype });
+
+                    localStorage.setItem('email', email);
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('usertype', usertype);
+
+                    document.getElementById('login-form').reset();
+                    setError(<p className="text-danger">User Logged in Successfully!</p>)
+                    navigate(from, { replace: true });
+                })
+                .catch(err => {
+                    setError(<p className="text-danger">{err?.response?.data?.error}!</p>)
+                });
         }
     }
 
@@ -73,4 +62,4 @@ const Login = (props) => {
     )
 }
 
-export default Login
+export default Login;

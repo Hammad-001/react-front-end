@@ -5,7 +5,7 @@ import axios from 'axios';
 const ForgotPassword = (props) => {
     const [error, setError] = useState(<p className="text-light">Please Enter Your Email!</p>);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const form = new FormData(e.currentTarget);
         const email = form.get('email');
@@ -13,9 +13,14 @@ const ForgotPassword = (props) => {
         if (email === "") {
             setError(<p className="text-danger">Please Enter Your Email!</p>)
         } else {
-            setError(<p className="text-success">Please Check Your Email Inbox!</p>)
-            axios.get()
-            document.getElementById('passreset-form').reset();
+            axios.post('http://localhost:8000/api/users/password-reset/', { email: email })
+                .then(response => {
+                    setError(<p className="text-success">{response?.data?.msg}!</p>)
+                    document.getElementById('passreset-form').reset();
+                })
+                .catch(err => {
+                    setError(<p className="text-danger">User does not exists!</p>)
+                });
         }
     }
 

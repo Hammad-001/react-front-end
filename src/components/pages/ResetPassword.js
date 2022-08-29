@@ -1,28 +1,36 @@
 import React, { useState } from 'react';
-import { NavLink, Navigate } from 'react-router-dom';
+import { NavLink, Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const ResetPassword = (props) => {
+    const { id, token } = useParams();
     const [error, setError] = useState(<p className="text-light">Please Enter New Password!</p>);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = new FormData(e.currentTarget);
-        const data = {
-            password1: form.get('password1'),
-            password2: form.get('password2')
-        }
-        if (data.password1 === "" && data.password2 === "") {
+        const password1 = form.get('password1')
+        const password2 = form.get('password2')
+
+        if (password1 === "" && password2 === "") {
             setError(<p className="text-danger">All Fields are Required!</p>)
-        } else if (data.password1 === "" || data.password2==="") {
+        } else if (password1 === "" || password2 === "") {
             setError(<p className="text-warning">Please Enter Your password!</p>)
-        } else if(data.password1 !==data.password2){
+        } else if (password1 !== password2) {
             setError(<p className="text-warning">You Password Does not Match!</p>)
-        } 
+        }
         else {
-            setError(<p className="text-success">Password Reset! You can Now Login!</p>)
-            axios.get()
-            setTimeout(()=> {<Navigate to="/dashboard" replace={true} />}, 3000)
-            document.getElementById('resetpass-form').reset();
+            axios.post('http://localhost:8000/api/users/password-reset/' + id + "/" + token + "/", { password: password1 })
+                .then(response => {
+                    setError(<p className="text-success">Password Reset! You can Now Login!</p>)
+                    setTimeout(() => { <Navigate to="/login" replace={true} /> }, 3000)
+                    document.getElementById('resetpass-form').reset();
+                })
+                .catch(err => {
+                    if (err?.response?.status === 404) {
+                        setError(<p className="text-danger">Please Try Again Later!</p>)
+                    }
+                });
         }
     }
 
