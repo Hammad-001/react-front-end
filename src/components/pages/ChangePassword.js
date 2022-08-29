@@ -1,36 +1,40 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import axios from 'axios';
+import { useContext } from 'react';
+import AuthContext from '../User/UserAuth';
 
 const ChangePassword = () => {
+  const { auth } = useContext(AuthContext);
   const [error, setError] = useState(<p className="text-light">Please Enter New Password!</p>);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const form = new FormData(e.currentTarget);
-        const password1 = form.get('password1')
-        const password2 = form.get('password2')
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    const password1 = form.get('password1')
+    const password2 = form.get('password2')
 
-        if (password1 === "" && password2 === "") {
-            setError(<p className="text-danger">All Fields are Required!</p>)
-        } else if (password1 === "" || password2 === "") {
-            setError(<p className="text-warning">Please Enter Your password!</p>)
-        } else if (password1 !== password2) {
-            setError(<p className="text-warning">You Password Does not Match!</p>)
-        }
-        else {
-            axios.post('http://localhost:8000/api/users/changepassword/', { password: password1 })
-                .then(response => {
-                    setError(<p className="text-success">Password Changed Successfully!</p>)
-                    document.getElementById('resetpass-form').reset();
-                })
-                .catch(err => {
-                    if (err?.response?.status === 406) {
-                        setError(<p className="text-danger">Please Try Again Later!</p>)
-                    }
-                });
-        }
+    if (password1 === "" && password2 === "") {
+      setError(<p className="text-danger">All Fields are Required!</p>)
+    } else if (password1 === "" || password2 === "") {
+      setError(<p className="text-warning">Please Enter Your password!</p>)
+    } else if (password1 !== password2) {
+      setError(<p className="text-warning">You Password Does not Match!</p>)
     }
+    else {
+      const headers = { 'Authorization': 'Bearer ' + auth.token }
+      axios.post('http://localhost:8000/api/users/changepassword/', { password: password1 }, { headers })
+        .then(response => {
+          setError(<p className="text-success">Password Changed Successfully!</p>)
+          document.getElementById('resetpass-form').reset();
+        })
+        .catch(err => {
+          if (err?.response?.status === 406) {
+            setError(<p className="text-danger">Please Try Again Later!</p>)
+          }
+        });
+    }
+  }
   return (
     <>
       <div className='container-fluid d-flex justify-content-center'>

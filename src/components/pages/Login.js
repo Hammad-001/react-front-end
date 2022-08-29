@@ -29,17 +29,15 @@ const Login = (props) => {
                 .then(response => {
                     const firstname = response.data.firstname;
                     const lastname = response.data.lastname;
-                    const name = firstname + " " + lastname;
                     const usertype = response.data.usertype;
                     const cnic = response.data.cnic;
                     const token = response.data.token;
 
-                    setAuth({ email, firstname, lastname, name, usertype, cnic, token });
+                    setAuth({ email, firstname, lastname, usertype, cnic, token });
 
                     localStorage.setItem('email', email);
                     localStorage.setItem('firstname', firstname);
                     localStorage.setItem('lastname', lastname);
-                    localStorage.setItem('name', name);
                     localStorage.setItem('usertype', usertype);
                     localStorage.setItem('cnic', cnic);
                     localStorage.setItem('token', token);

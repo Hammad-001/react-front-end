@@ -11,7 +11,7 @@ const Settings = () => {
       <div className='container-fluid d-flex justify-content-center'>
         <div className='rounded mt-3 text-center'>
           <h2 className=' mt-4 mb-3'>Profile</h2>
-          <div className="p-2 text-dark bg-light rounded">
+          <div className="p-4 text-dark bg-light rounded">
             <div className="col-12 mt-2 row line-height">
               <div className="col-4">
                 <label labelfor="firstname">First Name</label>
@@ -36,7 +36,7 @@ const Settings = () => {
                 <input type="text" disabled value={auth.cnic} className="form-control" id="cnic" />
               </div>
             </div>
-            <div className="col-12 row line-height">
+            <div className="col-12 mt-2 row line-height">
               <div className="col-4">
                 <label labelfor="email">Email</label>
               </div>
@@ -44,7 +44,7 @@ const Settings = () => {
                 <input type="email" value={auth.email} disabled className="form-control" id="email" />
               </div>
             </div>
-            <Link to='/dashboard/settings/changepassword' className='btn btn-dark mt-3 offset-1 col-6'> Change Password</Link>
+            <Link to='/dashboard/settings/changepassword' className='btn btn-dark mt-3 mb-1 offset-1 col-6'> Change Password</Link>
           </div>
         </div>
       </div>
