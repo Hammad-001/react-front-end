@@ -20,6 +20,7 @@ import PageNotFound from './components/pages/PageNotFound';
 
 import AuthContext from './components/User/UserAuth';
 import { useContext } from 'react';
+import { PrivateNavbar } from './components/pages/Navbar';
 
 const AllRoles = {
     'Admin': 'admin',
@@ -42,20 +43,28 @@ function App(props) {
                     <Route path='reset/:id/:token' element={auth.token ? <Navigate to="/dashboard" replace /> : <ResetPassword />} />
                 </Route>
                 <Route element={<RequireAuth allowedRoles={[AllRoles.Admin, AllRoles.Teacher, AllRoles.Student]} />}>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/dashboard/profile" element={<Dashboard />} />
-                    <Route path='/dashboard/settings' element={<Settings />} />
-                    <Route path='/dashboard/settings/changepassword' element={<ChangePassword />} />
+                    <Route path="/dashboard" element={<PrivateNavbar />}>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/dashboard/profile" element={<Dashboard />} />
+                        <Route path='/dashboard/settings' element={<Settings />} />
+                        <Route path='/dashboard/settings/changepassword' element={<ChangePassword />} />
+                        <Route path="/dashboard/unauthorized" element={<Unauthorized />} />
+                    </Route>
                 </Route>
                 <Route element={<RequireAuth allowedRoles={[AllRoles.Admin]} />}>
-                    <Route path="/dashboard/courses" element={<Dashboard />} />
-                    <Route path="/dashboard/students" element={<Dashboard />} />
-                    <Route path="/dashboard/teachers" element={<Dashboard />} />
+                    <Route path="/dashboard" element={<PrivateNavbar />}>
+                        <Route path="/dashboard/courses" element={<Dashboard />} />
+                        <Route path="/dashboard/students" element={<Dashboard />} />
+                        <Route path="/dashboard/teachers" element={<Dashboard />} />
+                        <Route path="/dashboard/unauthorized" element={<Unauthorized />} />
+                    </Route>
                 </Route>
                 <Route element={<RequireAuth allowedRoles={[AllRoles.Student]} />}>
-                    <Route path="/dashboard/courses" element={<Dashboard />} />
+                    <Route path="/dashboard" element={<PrivateNavbar />}>
+                        <Route path="/dashboard/courses" element={<Dashboard />} />
+                        <Route path="/dashboard/unauthorized" element={<Unauthorized />} />
+                    </Route>
                 </Route>
-                <Route path="/unauthorized" element={<Unauthorized />} />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>
         </BrowserRouter>
