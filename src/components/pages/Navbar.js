@@ -62,7 +62,7 @@ const PrivateNavbar = () => {
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="container-fluid">
                     <NavLink className="navbar-brand text-light nav-link" to="/">
-                        <img src={favicon} className="rounded-circle" alt="App Logo" width='70px' />Hi {auth.firstname}!
+                        <img src={favicon} className="rounded-circle" alt="App Logo" width='50px' />Hi, {auth.usertype}!
                     </NavLink>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
@@ -73,16 +73,13 @@ const PrivateNavbar = () => {
                                 <NavLink className="nav-link" to="/dashboard/courses">Courses</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/dashboard/teachers">Teachers</NavLink>
+                                <NavLink className="nav-link" to="/dashboard/users" hidden={auth.usertype === 'teacher' || auth.usertype === 'student'}>Users</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/dashboard/students">Students</NavLink>
+                                <NavLink className="nav-link" to="/dashboard/profile">Profile</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/dashboard/settings">Profile</NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <button className="btn btn-dark w-100 nav-link" onClick={handleLogout}>Logout</button>
+                                <button className="btn btn-dark w-100 shadow-none nav-link" onClick={handleLogout}>Logout</button>
                             </li>
                         </ul>
                     </div>

@@ -31,7 +31,7 @@ const ForgotPassword = (props) => {
                 <div className=' mt-3'>{error}</div>
                 <form id="passreset-form" className="p-4 vw-40 bg-light rounded text-dark" onSubmit={handleSubmit}>
                     <input type="email" name='email' id="email" className='col-12 form-control mt-2 mb-2' autoFocus='1' placeholder="Email address" />
-                    <button className="btn btn-dark col-12 mt-2 mb-2" autoFocus='2' type="submit">Get Email</button>
+                    <button className="btn btn-dark col-12 shadow-none mt-2 mb-2" autoFocus='2' type="submit">Get Email</button>
                     <NavLink to="/login" autoFocus='3' className='text-decoration-none text-dark' >Login</NavLink>
                 </form>
             </div>

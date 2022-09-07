@@ -27,19 +27,20 @@ const Login = (props) => {
         } else {
             axios.post('http://localhost:8000/api/users/login/', { email: email, password: password })
                 .then(response => {
-                    const firstname = response.data.firstname;
-                    const lastname = response.data.lastname;
+                    // const firstname = response.data.firstname;
+                    // const lastname = response.data.lastname;
                     const usertype = response.data.usertype;
-                    const cnic = response.data.cnic;
+                    // const cnic = response.data.cnic;
                     const token = response.data.token;
 
-                    setAuth({ email, firstname, lastname, usertype, cnic, token });
+                    // setAuth({ email, firstname, lastname, usertype, cnic, token });
+                    setAuth({ usertype, token });
 
                     localStorage.setItem('email', email);
-                    localStorage.setItem('firstname', firstname);
-                    localStorage.setItem('lastname', lastname);
+                    // localStorage.setItem('firstname', firstname);
+                    // localStorage.setItem('lastname', lastname);
                     localStorage.setItem('usertype', usertype);
-                    localStorage.setItem('cnic', cnic);
+                    // localStorage.setItem('cnic', cnic);
                     localStorage.setItem('token', token);
 
                     document.getElementById('login-form').reset();
@@ -60,7 +61,7 @@ const Login = (props) => {
                 <form id="login-form" className="p-4 vw-40 bg-light rounded text-dark" onSubmit={handleSubmit}>
                     <input type="email" name='email' id="email" className='col-12 form-control mt-2 mb-2' autoFocus='1' placeholder="Email address" />
                     <input type="password" name="password" id="password" className='col-12 form-control mt-2 mb-2' autoFocus='2' placeholder='Password' />
-                    <button className="btn btn-dark col-12 mt-2 mb-2" autoFocus='3' type="submit">Login</button>
+                    <button className="btn btn-dark shadow-none col-12 mt-2 mb-2" autoFocus='3' type="submit">Login</button>
                     <NavLink to="/forgotpassword" autoFocus='4' className='text-decoration-none text-dark' >Forgotten Password</NavLink>
                 </form>
             </div>

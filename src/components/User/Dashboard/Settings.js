@@ -1,56 +1,73 @@
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
-import { useContext } from 'react';
-import AuthContext from '../UserAuth';
+import axios from 'axios';
 
-const Settings = () => {
-  const { auth } = useContext(AuthContext);
+class Profile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      token: props.token,
+      profile: null
+    }
+  }
 
-  return (
-    <>
-      <div className='container-fluid d-flex justify-content-center'>
-        <div className='rounded mt-3 text-center'>
-          <h2 className=' mt-4 mb-3'>Profile</h2>
-          <div className="p-4 text-dark bg-light rounded">
-            <div className="col-12 mt-2 row line-height">
-              <div className="col-4">
-                <label labelfor="firstname">First Name</label>
-              </div>
-              <div className="col-8">
-                <input type="text" disabled value={auth.firstname} className="form-control" id="firstname" />
+  componentDidMount(props) {
+    axios.get('http://localhost:8000/api/users/profile/', {
+      headers: {
+        'Authorization': 'Bearer ' + this.state.token
+      }
+    }).then(response => { this.setState({ profile: response.data }) }).catch(error => error.response)
+  }
+
+  render() {
+    if (this.state.profile) {
+      return (
+        <>
+          <div className='container-fluid d-flex justify-content-center'>
+            <div className='rounded mt-3 text-center'>
+              <h2 className=' mt-4 mb-3'>Profile</h2>
+              <div className="p-4 text-dark bg-light rounded">
+                <div className="col-12 mt-2 row line-height">
+                  <div className="col-4">
+                    <label labelfor="firstname">First Name</label>
+                  </div>
+                  <div className="col-8">
+                    <input type="text" disabled value={this.state.profile.first_name} className="form-control" id="firstname" />
+                  </div>
+                </div>
+                <div className="col-12 mt-2 row line-height">
+                  <div className="col-4">
+                    <label labelfor="lastname">Last Name</label>
+                  </div>
+                  <div className="col-8">
+                    <input type="text" disabled value={this.state.profile.last_name} className="form-control" id="lastname" />
+                  </div>
+                </div>
+                <div className="col-12 mt-2 row line-height">
+                  <div className="col-4">
+                    <label labelfor="cnic">CNIC</label>
+                  </div>
+                  <div className="col-8">
+                    <input type="text" disabled value={this.state.profile.cnic} className="form-control" id="cnic" />
+                  </div>
+                </div>
+                <div className="col-12 mt-2 row line-height">
+                  <div className="col-4">
+                    <label labelfor="email">Email</label>
+                  </div>
+                  <div className="col-8">
+                    <input type="email" value={this.state.profile.email} disabled className="form-control" id="email" />
+                  </div>
+                </div>
+                <Link to='/dashboard/profile/changepassword' className='btn btn-dark mt-3 mb-1 shadow-none offset-1 col-6'> Change Password</Link>
               </div>
             </div>
-            <div className="col-12 mt-2 row line-height">
-              <div className="col-4">
-                <label labelfor="lastname">Last Name</label>
-              </div>
-              <div className="col-8">
-                <input type="text" disabled value={auth.lastname} className="form-control" id="lastname" />
-              </div>
-            </div>
-            <div className="col-12 mt-2 row line-height">
-              <div className="col-4">
-                <label labelfor="cnic">CNIC</label>
-              </div>
-              <div className="col-8">
-                <input type="text" disabled value={auth.cnic} className="form-control" id="cnic" />
-              </div>
-            </div>
-            <div className="col-12 mt-2 row line-height">
-              <div className="col-4">
-                <label labelfor="email">Email</label>
-              </div>
-              <div className="col-8">
-                <input type="email" value={auth.email} disabled className="form-control" id="email" />
-              </div>
-            </div>
-            <Link to='/dashboard/settings/changepassword' className='btn btn-dark mt-3 mb-1 offset-1 col-6'> Change Password</Link>
           </div>
-        </div>
-      </div>
-      <Outlet />
-    </>
-  )
+          <Outlet />
+        </>
+      )
+    } return (<div className='text-center mt-5'><h1>Loading...</h1> </div>)
+  }
 }
 
-export default Settings
+export default Profile

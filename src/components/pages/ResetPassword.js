@@ -43,7 +43,7 @@ const ResetPassword = (props) => {
                     <input type="password" name='password1' id="password1" className='col-12 form-control mt-2 mb-2' autoFocus='1' placeholder="Password" />
                     <input type="password" name="password2" id="password2" className='col-12 form-control mt-2 mb-2' autoFocus='2' placeholder='Verify Password' />
                     <button className="btn btn-dark col-12 mt-2 mb-2" autoFocus='3' type="submit">Reset Password</button>
-                    <NavLink to="/login" autoFocus='4' className='text-decoration-none text-dark' > Login </NavLink>
+                    <NavLink to="/login" autoFocus='4' className='text-decoration-none shadow-none text-dark' > Login </NavLink>
                 </form>
             </div>
         </div>

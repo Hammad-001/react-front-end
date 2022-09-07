@@ -10,17 +10,24 @@ import Layout from './components/pages/Layout';
 import Home from './components/pages/Homepage';
 import About from './components/pages/About';
 import Login from './components/pages/Login';
+import AddUser from './components/User/Dashboard/AddUser';
 import ForgotPassword from './components/pages/ForgotPassword';
 import ResetPassword from './components/pages/ResetPassword';
 import ChangePassword from './components/pages/ChangePassword';
-import Settings from './components/User/Dashboard/Settings';
+import Profile from './components/User/Dashboard/Settings';
 import Dashboard from './components/User/Dashboard/Dashboard';
-import Unauthorized from './components/User/Unauthorized';
+// import Unauthorized from './components/User/Unauthorized';
 import PageNotFound from './components/pages/PageNotFound';
 
 import AuthContext from './components/User/UserAuth';
 import { useContext } from 'react';
 import { PrivateNavbar } from './components/pages/Navbar';
+import User from './components/User/Dashboard/User';
+import Courses from './components/User/Dashboard/Courses';
+import AddCourse from './components/User/Dashboard/AddCourse';
+import AssignInstructor from './components/User/Dashboard/AssignInstructor';
+import MarkAttendance from './components/User/Dashboard/MarkAttendance';
+import MarkMarks from './components/User/Dashboard/MarkMarks';
 
 const AllRoles = {
     'Admin': 'admin',
@@ -45,17 +52,25 @@ function App(props) {
                 <Route element={<RequireAuth allowedRoles={[AllRoles.Admin, AllRoles.Teacher, AllRoles.Student]} />}>
                     <Route path="/dashboard" element={<PrivateNavbar />}>
                         <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/dashboard/profile" element={<Dashboard />} />
-                        <Route path='/dashboard/settings' element={<Settings />} />
-                        <Route path='/dashboard/settings/changepassword' element={<ChangePassword />} />
-                        <Route path="/dashboard/unauthorized" element={<Unauthorized />} />
+                        <Route path="/dashboard/profile" element={<Profile token={auth.token} />} />
+                        <Route path='/dashboard/profile/changepassword' element={<ChangePassword />} />
+                        <Route path="/dashboard/users" element={<User token={auth.token} />} />
+                        <Route path="/dashboard/users/add" element={<AddUser token={auth.token} />} />
+                        <Route path="/dashboard/courses" element={<Courses token={auth.token} usertype={auth.usertype} />} />
+                        <Route path="/dashboard/courses/add" element={<AddCourse token={auth.token} />} />
+                        <Route path="/dashboard/courses/:id" element={<AssignInstructor />} />
+                        <Route path="/dashboard/courses/attendance/:id" element={<MarkAttendance />} />
+                        <Route path="/dashboard/courses/marks/:id" element={<MarkMarks />} />
+                        {/* <Route path="/dashboard/unauthorized" element={<Unauthorized />} /> */}
                     </Route>
                 </Route>
-                <Route element={<RequireAuth allowedRoles={[AllRoles.Admin]} />}>
+                {/* <Route element={<RequireAuth allowedRoles={[AllRoles.Admin]} />}>
                     <Route path="/dashboard" element={<PrivateNavbar />}>
-                        <Route path="/dashboard/courses" element={<Dashboard />} />
-                        <Route path="/dashboard/students" element={<Dashboard />} />
-                        <Route path="/dashboard/teachers" element={<Dashboard />} />
+                        <Route path="/dashboard/users" element={<User token={auth.token} />} />
+                        <Route path="/dashboard/users/add" element={<AddUser token={auth.token} />} />
+                        <Route path="/dashboard/instructors" element={<Instructors token={auth.token} />} />
+                        <Route path="/dashboard/courses" element={<Courses token={auth.token} usertype={auth.usertype} />} />
+                        <Route path="/dashboard/courses/add" element={<AddCourse token={auth.token} />} />
                         <Route path="/dashboard/unauthorized" element={<Unauthorized />} />
                     </Route>
                 </Route>
@@ -64,7 +79,7 @@ function App(props) {
                         <Route path="/dashboard/courses" element={<Dashboard />} />
                         <Route path="/dashboard/unauthorized" element={<Unauthorized />} />
                     </Route>
-                </Route>
+                </Route> */}
                 <Route path="*" element={<PageNotFound />} />
             </Routes>
         </BrowserRouter>
