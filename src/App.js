@@ -54,13 +54,13 @@ function App(props) {
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/dashboard/profile" element={<Profile token={auth.token} />} />
                         <Route path='/dashboard/profile/changepassword' element={<ChangePassword />} />
-                        <Route path="/dashboard/users" element={<User token={auth.token} />} />
-                        <Route path="/dashboard/users/add" element={<AddUser token={auth.token} />} />
+                        <Route path="/dashboard/users" element={auth.usertype === 'admin' ? <User token={auth.token} /> : <Navigate to={'/*'} />} />
+                        <Route path="/dashboard/users/add" element={auth.usertype === 'admin' ? <AddUser token={auth.token} /> : <Navigate to={'/*'} />} />
                         <Route path="/dashboard/courses" element={<Courses token={auth.token} usertype={auth.usertype} />} />
-                        <Route path="/dashboard/courses/add" element={<AddCourse token={auth.token} />} />
-                        <Route path="/dashboard/courses/:id" element={<AssignInstructor />} />
-                        <Route path="/dashboard/courses/attendance/:id" element={<MarkAttendance />} />
-                        <Route path="/dashboard/courses/marks/:id" element={<MarkMarks />} />
+                        <Route path="/dashboard/courses/add" element={auth.usertype === 'admin' ? <AddCourse token={auth.token} /> : <Navigate to={'/*'} />} />
+                        <Route path="/dashboard/courses/:id" element={auth.usertype === 'admin' ? <AssignInstructor /> : <Navigate to={'/*'} />} />
+                        <Route path="/dashboard/courses/attendance/:id" element={auth.usertype === 'teacher' ? <MarkAttendance /> : <Navigate to={'/*'} />} />
+                        <Route path="/dashboard/courses/marks/:id" element={auth.usertype === 'teacher' ? <MarkMarks /> : <Navigate to={'/*'} />} />
                         {/* <Route path="/dashboard/unauthorized" element={<Unauthorized />} /> */}
                     </Route>
                 </Route>

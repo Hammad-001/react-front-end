@@ -118,6 +118,20 @@ class Courses extends React.Component {
         }
     }
 
+    handleAttendance = async (courseid) => {
+        await axios.get('http://localhost:8000/api/users/attendance/', {
+            params: {
+                courseid: courseid,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + this.state.token
+            }
+        }).then(response => {
+            this.setState({ attendance: response.data.attendance })
+        })
+            .catch(error => error.response)
+    }
+
     componentDidMount(props) {
         this.handleGetRequest();
     }
@@ -141,9 +155,11 @@ class Courses extends React.Component {
     render() {
         let counte = 1;
         let countu = 1;
+        let counta = 1;
         let count = 1;
         let courses = null;
         let enrolled = null;
+        let attendance = null;
         if (this.state.usertype === 'admin') {
             if (this.state.courses) {
                 if (this.state.filter === '') {
@@ -272,15 +288,15 @@ class Courses extends React.Component {
             }
         } else if (this.state.usertype === 'student') {
             if (this.state.courses) {
-                // if (this.state.filtere === '' && this.state.filteru === '') {
-                //     courses = this.state.courses
-                //     enrolled = this.state.enrolled
-                // } else {
                 courses = this.state.courses.filter(f => f.name.toLowerCase().includes(this.state.filteru.toLowerCase()) || this.state.filteru === '')
                 enrolled = this.state.enrolled.filter(f => f.courseid.name.toLowerCase().includes(this.state.filtere.toLowerCase()) || this.state.filtere === '')
-                // console.log(courses)
-                // console.log(enrolled)
-                // }
+                if (this.state.attendance) {
+                    attendance = this.state.attendance.map(date => <tr key={date.id} >
+                        <td>{counta++}</td>
+                        <td>{date.date}</td>
+                        <td>{date.isabsent ? 'Absent' : 'Present'}</td>
+                    </tr>)
+                }
                 courses = courses.map(
                     (course) => <tr key={course.id} >
                         <td>{counte++}</td>
@@ -298,9 +314,13 @@ class Courses extends React.Component {
                         <td>{countu++}</td>
                         <td>{course.courseid.code}</td>
                         <td>{course.courseid.name}</td>
+                        <td>{course.result}</td>
                         <td>
                             <button onClick={() => { this.setState({ id: course.id, enroll: false }) }} type="button" className="btn mx-2 btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Enroll">
                                 UnEnroll
+                            </button>
+                            <button onClick={() => { this.setState({ id: course.id }); this.handleAttendance(course.courseid.id) }} type="button" className="btn mx-2 btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Attendance">
+                                Attendance
                             </button>
                         </td>
                     </tr>
@@ -312,6 +332,35 @@ class Courses extends React.Component {
                         {/* <!-- Button trigger modal --> */}
 
                         {/* <!-- Modal --> */}
+                        <div className="modal fade" id="Attendance" tabIndex="-1" aria-labelledby="AttendanceModal" aria-hidden="true">
+                            <div className="modal-dialog">
+                                <div className="modal-content bg-dark">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title" id="modalLabel">Attendance Sheet</h5>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body">
+                                        {attendance ?
+                                            <table className="table table-dark table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Absent</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {attendance}
+                                                </tbody>
+                                            </table>
+                                            : <div className='text-center mt-5' > <h3>Loading...</h3> </div>}
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div className="modal fade" id="Enroll" tabIndex="-1" aria-labelledby="DeleteModal" aria-hidden="true">
                             <div className="modal-dialog">
                                 <div className="modal-content bg-dark">
@@ -344,6 +393,7 @@ class Courses extends React.Component {
                                             <th scope="col">#</th>
                                             <th scope="col">Code</th>
                                             <th scope="col">Name</th>
+                                            <th scope="col">Result</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
