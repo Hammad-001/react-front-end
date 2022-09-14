@@ -45,9 +45,7 @@ const PrivateNavbar = () => {
         axios.get('http://localhost:8000/api/users/logout/', { headers })
             .then(response => {
                 localStorage.removeItem('email')
-                localStorage.removeItem('firstname')
-                localStorage.removeItem('lastname')
-                localStorage.removeItem('cnic')
+                localStorage.removeItem('first_name')
                 localStorage.removeItem('token')
                 localStorage.removeItem('usertype')
                 setAuth({})
@@ -62,7 +60,7 @@ const PrivateNavbar = () => {
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="container-fluid">
                     <NavLink className="navbar-brand text-light nav-link" to="/">
-                        <img src={favicon} className="rounded-circle" alt="App Logo" width='50px' />Hi, {auth.usertype}!
+                        <img src={favicon} className="rounded-circle" alt="App Logo" width='50px' />Hi, {auth.first_name}!
                     </NavLink>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>

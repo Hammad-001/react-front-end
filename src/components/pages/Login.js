@@ -27,22 +27,14 @@ const Login = (props) => {
         } else {
             axios.post('http://localhost:8000/api/users/login/', { email: email, password: password })
                 .then(response => {
-                    // const firstname = response.data.firstname;
-                    // const lastname = response.data.lastname;
                     const usertype = response.data.usertype;
-                    // const cnic = response.data.cnic;
                     const token = response.data.token;
-
-                    // setAuth({ email, firstname, lastname, usertype, cnic, token });
-                    setAuth({ usertype, token });
-
+                    const first_name = response.data.first_name;
+                    setAuth({ usertype, token, first_name });
                     localStorage.setItem('email', email);
-                    // localStorage.setItem('firstname', firstname);
-                    // localStorage.setItem('lastname', lastname);
                     localStorage.setItem('usertype', usertype);
-                    // localStorage.setItem('cnic', cnic);
+                    localStorage.setItem('first_name', first_name);
                     localStorage.setItem('token', token);
-
                     document.getElementById('login-form').reset();
                     setError(<p className="text-danger">User Logged in Successfully!</p>)
                     navigate(from, { replace: true });

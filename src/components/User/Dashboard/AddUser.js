@@ -7,6 +7,8 @@ class AddUser extends React.Component {
         super(props);
         this.state = {
             token: props.token,
+            email: null,
+            val: null,
             error: <p className="text-light">Please Enter Details!</p>
         }
     }
@@ -22,6 +24,7 @@ class AddUser extends React.Component {
             cnic: form.get('cnic'),
             usertype: form.get('usertype'),
         }
+        this.setState({ email: data.email })
         try {
             const response = await axios.post('http://localhost:8000/api/users/users/', data, {
                 headers: {
@@ -29,35 +32,50 @@ class AddUser extends React.Component {
                 }
             })
             document.getElementById('user-form').reset();
-            this.setState({ error: <p className="text-success">{response?.data?.msg}!</p> })
+            this.setState({ error: <p className="text-success">{response?.data?.msg}!</p>, val: null })
         } catch (err) {
             if (err?.response?.data?.errors?.email) {
-                this.setState({ error: <p className="text-danger">{err?.response?.data?.errors?.email}!</p> })
-            } else if (err?.response?.data?.errors?.cnic) {
-                this.setState({ error: <p className="text-danger">{err?.response?.data?.errors?.cnic}!</p> })
+                this.setState({ data: data })
+                document.getElementById('click').click()
             }
         }
-        // axios.post('http://localhost:8000/api/users/users/', data, {
-        //     headers: {
-        //         'Authorization': 'Bearer ' + this.state.token
-        //     }
-        // }).then(res => {
-        //     console.log("I am res")
-        //     this.setState({ error: <p className="text-danger">{res?.data?.msg}!</p> })
-        //     document.getElementById('user-form').reset();
-        //     const navigate = useNavigate();
-        //     navigate(-1);
-        // })
-        // .catch(err => {
-        //     // if(err?.response?.status===404)
-        //     console.log("I am Here")
-        //     this.setState({ error: <p className="text-danger">{err?.response?.data?.error}!</p> })
-        // });
+    }
+
+    handle = async (val) => {
+        try {
+            const response = await axios.put('http://localhost:8000/api/users/users/', { email: this.state.email, data: this.state.data, change: val }, {
+                headers: {
+                    'Authorization': 'Bearer ' + this.state.token
+                }
+            })
+            document.getElementById('user-form').reset();
+            this.setState({ error: <p className="text-success">{response?.data?.msg}!</p> })
+        } catch (err) {
+            this.setState({ error: <p className="text-danger">Unknow Error Occured!</p> })
+        }
     }
 
     render() {
         return (
             <>
+                <button type="button" className="btn btn-danger shadow-none" hidden={true} id='click' data-bs-toggle="modal" data-bs-target="#Existing">                        </button>
+                <div className="modal fade" id="Existing" tabIndex="-1" aria-labelledby="existingModal" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content bg-dark">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="modalLabel">Existing User</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                                This user already exists! Do you want to keep user's previous record or not?
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-light" data-bs-dismiss="modal" onClick={() => { this.handle(false); }}>No</button>
+                                <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={() => { this.handle(true); }}>Yes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className='container-fluid d-flex justify-content-center'>
                     <div className='rounded text-center'>
                         <h2 className='mt-2 mb-1'>New User</h2>
@@ -87,5 +105,4 @@ class AddUser extends React.Component {
         )
     }
 }
-
 export default AddUser
