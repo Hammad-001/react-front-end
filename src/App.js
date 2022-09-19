@@ -29,12 +29,6 @@ import AssignInstructor from './components/User/Dashboard/AssignInstructor';
 import MarkAttendance from './components/User/Dashboard/MarkAttendance';
 import MarkMarks from './components/User/Dashboard/MarkMarks';
 
-const AllRoles = {
-    'Admin': 'admin',
-    'Teacher': 'teacher',
-    'Student': 'student'
-}
-
 function App(props) {
     const { auth } = useContext(AuthContext);
 
@@ -49,38 +43,21 @@ function App(props) {
                     <Route path='forgotpassword' element={auth.token ? <Navigate to="/dashboard" replace /> : <ForgotPassword />} />
                     <Route path='reset/:id/:token' element={auth.token ? <Navigate to="/dashboard" replace /> : <ResetPassword />} />
                 </Route>
-                <Route element={<RequireAuth allowedRoles={[AllRoles.Admin, AllRoles.Teacher, AllRoles.Student]} />}>
+                <Route element={<RequireAuth />}>
                     <Route path="/dashboard" element={<PrivateNavbar />}>
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/dashboard/profile" element={<Profile token={auth.token} />} />
                         <Route path='/dashboard/profile/changepassword' element={<ChangePassword />} />
-                        <Route path="/dashboard/users" element={auth.usertype === 'admin' ? <User token={auth.token} /> : <Navigate to={'/*'} />} />
-                        <Route path="/dashboard/users/add" element={auth.usertype === 'admin' ? <AddUser token={auth.token} /> : <Navigate to={'/*'} />} />
+                        <Route path="/dashboard/users" element={auth.usertype === 'admin' ? <User token={auth.token} /> : <Navigate to={'/404'} />} />
+                        <Route path="/dashboard/users/add" element={auth.usertype === 'admin' ? <AddUser token={auth.token} /> : <Navigate to={'/404'} />} />
                         <Route path="/dashboard/courses" element={<Courses token={auth.token} usertype={auth.usertype} />} />
-                        <Route path="/dashboard/courses/add" element={auth.usertype === 'admin' ? <AddCourse token={auth.token} /> : <Navigate to={'/*'} />} />
-                        <Route path="/dashboard/courses/:id" element={auth.usertype === 'admin' ? <AssignInstructor /> : <Navigate to={'/*'} />} />
-                        <Route path="/dashboard/courses/attendance/:id" element={auth.usertype === 'teacher' ? <MarkAttendance /> : <Navigate to={'/*'} />} />
-                        <Route path="/dashboard/courses/marks/:id" element={auth.usertype === 'teacher' ? <MarkMarks /> : <Navigate to={'/*'} />} />
-                        {/* <Route path="/dashboard/unauthorized" element={<Unauthorized />} /> */}
+                        <Route path="/dashboard/courses/add" element={auth.usertype === 'admin' ? <AddCourse token={auth.token} /> : <Navigate to={'/404'} />} />
+                        <Route path="/dashboard/courses/:id" element={auth.usertype === 'admin' ? <AssignInstructor /> : <Navigate to={'/404'} />} />
+                        <Route path="/dashboard/courses/attendance/:id" element={auth.usertype === 'teacher' ? <MarkAttendance /> : <Navigate to={'/404'} />} />
+                        <Route path="/dashboard/courses/marks/:id" element={auth.usertype === 'teacher' ? <MarkMarks /> : <Navigate to={'/404'} />} />
                     </Route>
                 </Route>
-                {/* <Route element={<RequireAuth allowedRoles={[AllRoles.Admin]} />}>
-                    <Route path="/dashboard" element={<PrivateNavbar />}>
-                        <Route path="/dashboard/users" element={<User token={auth.token} />} />
-                        <Route path="/dashboard/users/add" element={<AddUser token={auth.token} />} />
-                        <Route path="/dashboard/instructors" element={<Instructors token={auth.token} />} />
-                        <Route path="/dashboard/courses" element={<Courses token={auth.token} usertype={auth.usertype} />} />
-                        <Route path="/dashboard/courses/add" element={<AddCourse token={auth.token} />} />
-                        <Route path="/dashboard/unauthorized" element={<Unauthorized />} />
-                    </Route>
-                </Route>
-                <Route element={<RequireAuth allowedRoles={[AllRoles.Student]} />}>
-                    <Route path="/dashboard" element={<PrivateNavbar />}>
-                        <Route path="/dashboard/courses" element={<Dashboard />} />
-                        <Route path="/dashboard/unauthorized" element={<Unauthorized />} />
-                    </Route>
-                </Route> */}
-                <Route path="*" element={<PageNotFound />} />
+                <Route path="/404" element={<PageNotFound />} />
             </Routes>
         </BrowserRouter>
     );

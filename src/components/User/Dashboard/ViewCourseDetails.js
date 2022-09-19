@@ -19,6 +19,7 @@ const ViewCourseDetails = (props) => {
                 }
             })
                 .then(response => {
+                    console.log(response.data)
                     setStudents(response.data.students)
                     setTeachers(response.data.teachers)
                 })

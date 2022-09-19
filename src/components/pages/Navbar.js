@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useContext } from 'react';
 import AuthContext from '../User/UserAuth';
+import Cookies from 'js-cookie'
 
 const PublicNavbar = () => {
     return (
@@ -44,10 +45,10 @@ const PrivateNavbar = () => {
     const handleLogout = async () => {
         axios.get('http://localhost:8000/api/users/logout/', { headers })
             .then(response => {
-                localStorage.removeItem('email')
-                localStorage.removeItem('first_name')
-                localStorage.removeItem('token')
-                localStorage.removeItem('usertype')
+                Cookies.remove('email')
+                Cookies.remove('usertype')
+                Cookies.remove('first_name')
+                Cookies.remove('token')
                 setAuth({})
                 navigate("/login", { replace: true })
 

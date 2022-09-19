@@ -3,6 +3,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AuthContext from '../User/UserAuth';
 import { useContext } from 'react';
+import Cookies from 'js-cookie'
 
 const Login = (props) => {
     const { setAuth } = useContext(AuthContext);
@@ -30,11 +31,14 @@ const Login = (props) => {
                     const usertype = response.data.usertype;
                     const token = response.data.token;
                     const first_name = response.data.first_name;
+
                     setAuth({ usertype, token, first_name });
-                    localStorage.setItem('email', email);
-                    localStorage.setItem('usertype', usertype);
-                    localStorage.setItem('first_name', first_name);
-                    localStorage.setItem('token', token);
+
+                    Cookies.set('email', email, { expires: 1, sameSite: 'strict' });
+                    Cookies.set('token', token, { expires: 1, sameSite: 'strict' });
+                    Cookies.set('first_name', first_name, { expires: 1, sameSite: 'strict' });
+                    Cookies.set('usertype', usertype, { expires: 1, sameSite: 'strict' });
+
                     document.getElementById('login-form').reset();
                     setError(<p className="text-danger">User Logged in Successfully!</p>)
                     navigate(from, { replace: true });
