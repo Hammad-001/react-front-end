@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 
-class AddUser extends React.Component {
+class CreateUser extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -96,7 +96,7 @@ class AddUser extends React.Component {
                                     <option value="student">Student</option>
                                 </select>
                                 <button className="btn btn-dark shadow-none col-12 mb-2 mt-2" autoFocus='3' type='submit'>Save</button>
-                                <NavLink className="link-stretched text-decoration-none text-dark" to="/dashboard/users">View Users</NavLink>
+                                <NavLink className="link-stretched text-decoration-none text-dark" to="/u/users">View Users</NavLink>
                             </form>
                         </div>
                     </div>
@@ -105,4 +105,4 @@ class AddUser extends React.Component {
         )
     }
 }
-export default AddUser
+export default CreateUser

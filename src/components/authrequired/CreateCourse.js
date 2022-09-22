@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 
-class AddCourse extends React.Component {
+class CreateCourse extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -57,7 +57,7 @@ class AddCourse extends React.Component {
                                 <input type="text" name='code' id="code" className='col-12 form-control mt-2 mb-2' autoFocus='1' placeholder="Course code" required />
                                 <input type="text" name="name" id="name" className='col-12 form-control mt-2 mb-2' autoFocus='2' placeholder='Course Name' required />
                                 <button className="btn btn-dark shadow-none col-12 mb-2 mt-2" autoFocus='3' type='submit'>Save</button>
-                                <NavLink className="link-stretched text-decoration-none text-dark" to="/dashboard/courses">View Courses</NavLink>
+                                <NavLink className="link-stretched text-decoration-none text-dark" to="/u/courses">View Courses</NavLink>
                             </form>
                         </div>
                     </div>
@@ -67,4 +67,4 @@ class AddCourse extends React.Component {
     }
 }
 
-export default AddCourse
+export default CreateCourse

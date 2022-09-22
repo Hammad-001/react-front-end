@@ -2,7 +2,7 @@ import favicon from '../../assets/images/favicon.ico'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useContext } from 'react';
-import AuthContext from '../User/UserAuth';
+import AuthContext from '../others/UserAuth';
 import Cookies from 'js-cookie'
 
 const PublicNavbar = () => {
@@ -13,7 +13,7 @@ const PublicNavbar = () => {
 
                     <NavLink className="navbar-brand" to="/">
                         <img src={favicon} className="rounded-circle" alt="App Logo" width='40px' />
-                        React App
+                        My LMS App
                     </NavLink>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
@@ -22,9 +22,6 @@ const PublicNavbar = () => {
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li className="nav-item">
                                 <NavLink className="nav-link" to='/'>Home</NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink className="nav-link" to="/about">About</NavLink>
                             </li>
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/login">Login</NavLink>
@@ -69,13 +66,10 @@ const PrivateNavbar = () => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li className="nav-item text-decoration-none">
-                                <NavLink className="nav-link" to="/dashboard/courses">Courses</NavLink>
+                                <NavLink className="nav-link" to="/u/courses">Courses</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/dashboard/users" hidden={auth.usertype === 'teacher' || auth.usertype === 'student'}>Users</NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink className="nav-link" to="/dashboard/profile">Profile</NavLink>
+                                <NavLink className="nav-link" to="/u/users" hidden={auth.usertype === 'teacher' || auth.usertype === 'student'}>Users</NavLink>
                             </li>
                             <li className="nav-item">
                                 <button className="btn btn-dark w-100 shadow-none nav-link" onClick={handleLogout}>Logout</button>

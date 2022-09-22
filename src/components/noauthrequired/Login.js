@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import AuthContext from '../User/UserAuth';
+import AuthContext from '../others/UserAuth';
 import { useContext } from 'react';
 import Cookies from 'js-cookie'
 
@@ -11,6 +11,7 @@ const Login = (props) => {
     const location = useLocation();
     const navigate = useNavigate();
     let from = location.state?.from?.pathname || "/";
+    
     const [error, setError] = useState(<p className="text-light">Please Enter Your Details!</p>);
 
     const handleSubmit = async (e) => {

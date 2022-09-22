@@ -59,7 +59,7 @@ class Profile extends React.Component {
                     <input type="email" value={this.state.profile.email} disabled className="form-control" id="email" />
                   </div>
                 </div>
-                <Link to='/dashboard/profile/changepassword' className='btn btn-dark mt-3 mb-1 shadow-none offset-1 col-6'> Change Password</Link>
+                <Link to='/u/changepassword' className='btn btn-dark mt-3 mb-1 shadow-none offset-1 col-6'> Change Password</Link>
               </div>
             </div>
           </div>

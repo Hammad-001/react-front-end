@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, NavLink, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 
-import AuthContext from '../UserAuth';
+import AuthContext from '../others/UserAuth';
 
 const AssignInstructor = (props) => {
     let consta = 0;
@@ -99,7 +99,7 @@ const AssignInstructor = (props) => {
                 {/* Courses View */}
                 <div className="row">
                     <div className="col-12">
-                        <NavLink className='btn btn-light bg-light shadow-none mb-2' to='/dashboard/courses'>Back</NavLink>
+                        <NavLink className='btn btn-light bg-light shadow-none mb-2' to='/u/courses'>Back</NavLink>
                     </div>
                     <div className="col-12 mb-2 text-center">
                         <h3>{course.name}</h3>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios';
 import { useParams, NavLink, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
-import AuthContext from '../UserAuth';
+import AuthContext from '../others/UserAuth';
 
 const MarkAttendance = () => {
     const { auth } = useContext(AuthContext);
@@ -91,7 +91,7 @@ const MarkAttendance = () => {
                     <div className="row">
                         <div className="row col-md-12 mb-3">
                             <div className="col-md-2">
-                                <NavLink className='btn btn-light bg-light shadow-none' to='/dashboard/courses'>Back</NavLink>
+                                <NavLink className='btn btn-light bg-light shadow-none' to='/u/courses'>Back</NavLink>
                             </div>
                             <div className="col-md-2 offset-md-8">
                                 <button type="button" className="btn btn-primary float-end shadow-none" data-bs-toggle="modal" data-bs-target="#Attendance">Submit Attendance</button></div>

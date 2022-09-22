@@ -174,7 +174,7 @@ class Courses extends React.Component {
                         <td>{course.name}</td>
                         <td>{course.instructors.length === 0 ? 'None' : course.instructors[0].first_name}</td>
                         <td>
-                            <NavLink to={"/dashboard/courses/" + course.id} state={{ course: course }} className="btn mx-1 btn-success mb-1 shadow-none">
+                            <NavLink to={"/u/courses/" + course.id} state={{ course: course }} className="btn mx-1 btn-success mb-1 shadow-none">
                                 Assign
                             </NavLink>
                             <button onClick={() => { this.setState({ id: course.id }) }} type="button" className="btn mx-1 mb-1 btn-danger shadow-none" data-bs-toggle="modal" data-bs-target="#Delete">
@@ -254,7 +254,7 @@ class Courses extends React.Component {
                         <div className='row container-fluid'>
                             <div className='row col-md-8'>
                                 <div className='col-md-2 mb-2 text-center'>
-                                    <NavLink className="btn btn-light shadow-none" to="/dashboard/courses/add">
+                                    <NavLink className="btn btn-light shadow-none" to="/u/courses/add">
                                         Add Course
                                     </NavLink>
                                 </div>
@@ -453,13 +453,13 @@ class Courses extends React.Component {
                         <td>{course.courseid.code}</td>
                         <td>{course.courseid.name}</td>
                         <td>
-                            <NavLink to={"/dashboard/courses/attendance/" + course.courseid.id} state={{ course: course.courseid }} className="btn mx-2 btn-success shadow-none">
+                            <NavLink to={"/u/courses/attendance/" + course.courseid.id} state={{ course: course.courseid }} className="btn mx-2 btn-success shadow-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                                 </svg> Attendance
                             </NavLink>
-                            <NavLink to={"/dashboard/courses/marks/" + course.courseid.id} state={{ course: course.courseid }} className="btn mx-2 btn-success shadow-none">
+                            <NavLink to={"/u/courses/marks/" + course.courseid.id} state={{ course: course.courseid }} className="btn mx-2 btn-success shadow-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
