@@ -12,6 +12,7 @@ class Courses extends React.Component {
             id: null,
             filtere: '',
             filteru: '',
+            StudentView: true,
             usertype: props.usertype,
             token: props.token,
             courses: null,
@@ -31,7 +32,6 @@ class Courses extends React.Component {
                 }
             })
                 .then(response => {
-                    console.log(response.data)
                     this.setState({ courses: response.data.courses })
                 })
                 .catch(error => error.response)
@@ -172,28 +172,24 @@ class Courses extends React.Component {
                         <td>{count++}</td>
                         <td>{course.code}</td>
                         <td>{course.name}</td>
+                        <td>{course.instructors.length === 0 ? 'None' : course.instructors[0].first_name}</td>
                         <td>
-                            <NavLink to={"/dashboard/courses/" + course.id} className="btn mx-2 btn-success shadow-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye" viewBox="0 0 16 16">
-                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
-                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
-                                </svg> Assign
+                            <NavLink to={"/dashboard/courses/" + course.id} state={{ course: course }} className="btn mx-1 btn-success mb-1 shadow-none">
+                                Assign
                             </NavLink>
-                        </td>
-                        <td>
-                            <button onClick={() => { this.setState({ id: course.id }) }} type="button" className="btn mx-2 btn-danger shadow-none" data-bs-toggle="modal" data-bs-target="#Delete">
+                            <button onClick={() => { this.setState({ id: course.id }) }} type="button" className="btn mx-1 mb-1 btn-danger shadow-none" data-bs-toggle="modal" data-bs-target="#Delete">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
                                     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
                                     <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
                                 </svg>
                             </button>
-                            <button onClick={() => { this.setState({ course: course.id }) }} type="button" className="btn mx-2 btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Edit">
+                            <button onClick={() => { this.setState({ course: course }) }} type="button" className="btn mx-1 mb-1 btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Edit">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                     <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                 </svg>
                             </button>
-                            <button onClick={() => this.setState({ course: course, view: true})} type="button" className="btn mx-2 btn-success shadow-none">
+                            <button onClick={() => this.setState({ course: course, view: true })} type="button" className="btn mx-1 mb-1 btn-success shadow-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye" viewBox="0 0 16 16">
                                     <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
                                     <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
@@ -257,30 +253,32 @@ class Courses extends React.Component {
                         {/* Courses View */}
                         <div className='row container-fluid'>
                             <div className='row col-md-8'>
-                                <div className='col-md-2 align-self-right'>
+                                <div className='col-md-2 mb-2 text-center'>
                                     <NavLink className="btn btn-light shadow-none" to="/dashboard/courses/add">
                                         Add Course
                                     </NavLink>
                                 </div>
-                                <div className='col-md-5 offset-md-5'>
+                                <div className='col-md-5 mb-2 offset-md-5'>
                                     <input type="text" name='filter' id="filter" value={this.state.filter || ''} onChange={(e) => this.setState({ filter: e.target.value })} className='col-12 text-center form-control' placeholder="Search Courses by Course Name" required />
                                 </div>
                             </div>
                             {this.state.view ? <ViewCourseDetails course={this.state.course} close={this.handleClose} /> : null}
-                            <table className="table table-dark table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col"> Course code </th>
-                                        <th scope="col"> Course Name </th>
-                                        <th scope="col"> Assigned Teachers</th>
-                                        <th scope="col"> Actions </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {courses}
-                                </tbody>
-                            </table>
+                            <div className='table-responsive'>
+                                <table className="table text-center table-dark table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col"> Course code </th>
+                                            <th scope="col"> Course Name </th>
+                                            <th scope="col"> Assigned Teacher</th>
+                                            <th scope="col"> Actions </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {courses}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div >
                 )
@@ -288,10 +286,12 @@ class Courses extends React.Component {
         } else if (this.state.usertype === 'student') {
             if (this.state.courses) {
                 courses = this.state.courses.filter(f => f.name.toLowerCase().includes(this.state.filteru.toLowerCase()) || this.state.filteru === '')
-                enrolled = this.state.enrolled.filter(f => f.courseid.name.toLowerCase().includes(this.state.filtere.toLowerCase()) || this.state.filtere === '')
+                enrolled = this.state.enrolled.filter(f => f.name.toLowerCase().includes(this.state.filtere.toLowerCase()) || this.state.filtere === '')
                 if (this.state.attendance) {
                     attendance = this.state.attendance.map(date => <tr key={date.id} >
                         <td>{counta++}</td>
+                        <td>{date.courseid.code}</td>
+                        <td>{date.courseid.name}</td>
                         <td>{date.date}</td>
                         <td>{date.isabsent ? 'Absent' : 'Present'}</td>
                     </tr>)
@@ -301,6 +301,7 @@ class Courses extends React.Component {
                         <td>{counte++}</td>
                         <td>{course.code}</td>
                         <td>{course.name}</td>
+                        <td>{course.instructors.length === 0 ? 'None' : course.instructors[0].first_name}</td>
                         <td>
                             <button onClick={() => { this.setState({ id: course.id, enroll: true }) }} type="button" className="btn mx-2 btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Enroll">
                                 Enroll
@@ -311,16 +312,20 @@ class Courses extends React.Component {
                 enrolled = enrolled.map(
                     (course) => <tr key={course.id} >
                         <td>{countu++}</td>
-                        <td>{course.courseid.code}</td>
-                        <td>{course.courseid.name}</td>
+                        <td>{course.code}</td>
+                        <td>{course.name}</td>
+                        <td>{course.instructors.length === 0 ? 'None' : course.instructors[0].first_name}</td>
                         <td>{course.result}</td>
                         <td>
-                            <button onClick={() => { this.setState({ id: course.id, enroll: false }) }} type="button" className="btn mx-2 btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Enroll">
-                                UnEnroll
-                            </button>
-                            <button onClick={() => { this.setState({ id: course.id }); this.handleAttendance(course.courseid.id) }} type="button" className="btn mx-2 btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Attendance">
+                            <button onClick={() => { this.setState({ id: course.id }); this.handleAttendance(course.id) }} type="button" className="btn mx-2 mb-2 btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Attendance">
                                 Attendance
                             </button>
+                            {course.result ?
+                                null :
+                                <button onClick={() => { this.setState({ id: course.id, enroll: false }); }} type="button" className="btn mx-2 btn-primary mb-2 shadow-none" data-bs-toggle="modal" data-bs-target="#Enroll">
+                                    UnEnroll
+                                </button>
+                            }
                         </td>
                     </tr>
                 )
@@ -328,24 +333,26 @@ class Courses extends React.Component {
                 return (
 
                     <div className='container-fluid'>
-                        {/* <!-- Button trigger modal --> */}
-
+                        {/* <!-- Button Toggle --> */}
+                        <button className='btn btn-light bg-light shadow-none' onClick={() => this.setState({ StudentView: !this.state.StudentView })}>{this.state.StudentView ? 'View UnEnrolled Courses' : 'View Enrolled Courses'}</button>
                         {/* <!-- Modal --> */}
-                        <div className="modal fade" id="Attendance" tabIndex="-1" aria-labelledby="AttendanceModal" aria-hidden="true">
+                        <div className="modal modal-lg fade" id="Attendance" tabIndex="-1" aria-labelledby="AttendanceModal" aria-hidden="true">
                             <div className="modal-dialog">
                                 <div className="modal-content bg-dark">
                                     <div className="modal-header">
                                         <h5 className="modal-title" id="modalLabel">Attendance Sheet</h5>
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div className="modal-body">
+                                    <div className="modal-body table-responsive">
                                         {attendance ?
                                             <table className="table table-dark table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">#</th>
+                                                        <th scope="col">Course Code</th>
+                                                        <th scope="col">Course Name</th>
                                                         <th scope="col">Date</th>
-                                                        <th scope="col">Absent</th>
+                                                        <th scope="col">Attendance</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -381,45 +388,54 @@ class Courses extends React.Component {
                         {/* Courses View */}
 
                         <div className="row">
-                            <div className="col-md-6">
-                                <div className='col-md-6 offset-md-3 mb-3'>
-                                    <input type="text" name='filter' id="filter" value={this.state.filtere || ''} onChange={(e) => this.setState({ filtere: e.target.value })} className='col-12 text-center form-control' placeholder="Search Courses by Course Name" required />
+                            {this.state.StudentView ?
+                                <div className="col-md-12">
+                                    <div className='col-md-6 offset-md-3 mb-3'>
+                                        <input type="text" name='filter' id="filter" value={this.state.filtere || ''} onChange={(e) => this.setState({ filtere: e.target.value })} className='col-12 text-center form-control' placeholder="Search Courses by Course Name" required />
+                                    </div>
+                                    <h4 className="text-light text-center">Enrolled Courses</h4>
+                                    <div className='table-responsive'>
+                                        <table className="table table-dark table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Code</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Teacher Name</th>
+                                                    <th scope="col">Result</th>
+                                                    <th scope="col">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {enrolled}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> :
+                                <div className="col-md-12">
+                                    <div className='col-md-6 offset-md-3 mb-3'>
+                                        <input type="text" name='filter' id="filter" value={this.state.filteru || ''} onChange={(e) => this.setState({ filteru: e.target.value })} className='col-12 text-center form-control' placeholder="Search Courses by Course Name" required />
+                                    </div>
+                                    <h4 className="text-center">UnEnrolled Courses</h4>
+                                    <div className='table-responsive'>
+                                        <table className="table table-dark table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Code</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Teacher Name</th>
+                                                    <th scope="col">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {courses}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <h4 className="text-light text-center">Enrolled Courses</h4>
-                                <table className="table table-dark table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Code</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Result</th>
-                                            <th scope="col">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {enrolled}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div className="col-md-6">
-                                <div className='col-md-6 offset-md-3 mb-3'>
-                                    <input type="text" name='filter' id="filter" value={this.state.filteru || ''} onChange={(e) => this.setState({ filteru: e.target.value })} className='col-12 text-center form-control' placeholder="Search Courses by Course Name" required />
-                                </div>
-                                <h4 className="text-center">UnEnrolled Courses</h4>
-                                <table className="table table-dark table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Code</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {courses}
-                                    </tbody>
-                                </table>
-                            </div>
+                            }
+
                         </div>
                     </div>
                 )
@@ -437,13 +453,13 @@ class Courses extends React.Component {
                         <td>{course.courseid.code}</td>
                         <td>{course.courseid.name}</td>
                         <td>
-                            <NavLink to={"/dashboard/courses/attendance/" + course.courseid.id} className="btn mx-2 btn-success shadow-none">
+                            <NavLink to={"/dashboard/courses/attendance/" + course.courseid.id} state={{ course: course.courseid }} className="btn mx-2 btn-success shadow-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                                 </svg> Attendance
                             </NavLink>
-                            <NavLink to={"/dashboard/courses/marks/" + course.courseid.id} className="btn mx-2 btn-success shadow-none">
+                            <NavLink to={"/dashboard/courses/marks/" + course.courseid.id} state={{ course: course.courseid }} className="btn mx-2 btn-success shadow-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
@@ -454,7 +470,7 @@ class Courses extends React.Component {
                 )
                 return (
                     <div className="col-md-12">
-                        <div className='col-md-8 offset-md-3 mb-3'>
+                        <div className='col-md-6 offset-md-3 mb-3'>
                             <input type="text" name='filter' id="filter" value={this.state.filter || ''} onChange={(e) => this.setState({ filter: e.target.value })} className='col-12 text-center form-control' placeholder="Search Course by Course Name" required />
                         </div>
                         <h4 className="text-light text-center">Assigned Courses</h4>

@@ -189,7 +189,7 @@ class User extends React.Component {
                     {/* Users View */}
                     <div className='row text-center container-fluid'>
                         <div className='row col-md-8'>
-                            <div className='col-md-3'>
+                            <div className='col-md-3 mb-2'>
                                 <NavLink className="btn btn-light shadow-none" to="/dashboard/users/add">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="16" fill="currentColor" className="bi bi-person-plus" viewBox="0 0 16 16">
                                         <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
@@ -197,12 +197,12 @@ class User extends React.Component {
                                     </svg> Add User
                                 </NavLink>
                             </div>
-                            <div className='col-md-6 offset-md-3'>
+                            <div className='col-md-6 offset-md-3 mb-2'>
                                 <input type="text" name='filter' id="filter" value={this.state.filter || ''} onChange={(e) => this.setState({ filter: e.target.value })} className='col-12 text-center form-control' placeholder="Search Users by First Name" />
                             </div>
                         </div>
                         {/* <form className='row col-md-4' onSubmit={this.handleFilter}> */}
-                        <div className='col-md-2 offset-md-2'>
+                        <div className='col-md-2 mb-2 offset-md-2'>
                             <select onChange={async (e) => this.setState({ usertype: e.target.value })} onClick={this.handleFilter} className="form-select text-center" name='filter' aria-label="Select Role">
                                 <option value='All'>All Users</option>
                                 <option value="student">Students</option>
@@ -216,22 +216,24 @@ class User extends React.Component {
                                 </button>
                             </div>
                         </form> */}
-                        <table className="table table-dark table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Role</th>
-                                    <th scope="col">First Name</th>
-                                    <th scope="col">Last Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">CNIC</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {users}
-                            </tbody>
-                        </table>
+                        <div className='table-responsive'>
+                            <table className="table table-dark table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Role</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">CNIC</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {users}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             )

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios';
-import { useParams, NavLink } from 'react-router-dom';
+import { useParams, NavLink, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../UserAuth';
 
@@ -8,6 +8,9 @@ const MarkAttendance = () => {
     const { auth } = useContext(AuthContext);
     let { id } = useParams();
     id = parseInt(id, 10);
+
+    const location = useLocation()
+    const { course } = location.state
 
     const [enrolled, setEnrolled] = useState([]);
     const [filterE, setFilterE] = useState('');
@@ -22,7 +25,7 @@ const MarkAttendance = () => {
             }
         })
             .then(response => {
-                setEnrolled(response.data.enrolled.map(v => ({ ...v, absent: false })));
+                setEnrolled(response.data.enrolled);
             })
             .catch(error => error.response)
     }, [auth.token, id])
@@ -32,18 +35,12 @@ const MarkAttendance = () => {
     }, [handleLoad])
 
     const handleAttendance = async () => {
-        let attendance = []
-        for (let i = 0; i < enrolled.length; i++) {
-            attendance.push({
-                courseid: id,
-                studentid: enrolled[i].studentid.id,
-                isabsent: enrolled[i].absent
-            })
-        }
         axios.post('http://localhost:8000/api/users/attendance/',
-            attendance,
+            { enrolled: enrolled, courseid: id },
             {
-                headers: { 'Authorization': 'Bearer ' + auth.token }
+                headers: {
+                    'Authorization': 'Bearer ' + auth.token
+                }
             }
         )
             .then(response => {
@@ -61,14 +58,13 @@ const MarkAttendance = () => {
     }
 
     const handleCheck = (studentid) => {
-        enrolled[enrolled.findIndex((obj => obj.studentid.id === studentid))].absent = enrolled[enrolled.findIndex((obj => obj.studentid.id === studentid))].absent ? false : true;
+        setEnrolled(enrolled.map(t => t.studentid.id === studentid ? { ...t, absent: !t.absent } : t))
     }
 
 
     return (
         (enrolled) ?
             <>
-
                 <div className='container-fluid'>
                     {/* <!-- Button trigger modal --> */}
 
@@ -92,44 +88,53 @@ const MarkAttendance = () => {
                     </div>
 
                     {/* Courses View */}
-
                     <div className="row">
                         <div className="row col-md-12 mb-3">
                             <div className="col-md-2">
                                 <NavLink className='btn btn-light bg-light shadow-none' to='/dashboard/courses'>Back</NavLink>
                             </div>
                             <div className="col-md-2 offset-md-8">
-                                <button type="button" className="btn btn-primary float-end shadow-none" data-bs-toggle="modal" data-bs-target="#Attendance">Submit Attendance</button></div>                    <div className="col-md-6 offset-md-3">
+                                <button type="button" className="btn btn-primary float-end shadow-none" data-bs-toggle="modal" data-bs-target="#Attendance">Submit Attendance</button></div>
+                            <div className="col-md-6 offset-md-3">
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className=" col-5 mb-2 text-center">
+                                <h3>Course: {course.name}</h3>
+                            </div>
+                            <div className="col-4 offset-md-3 float-end mb-2 text-center">
+                                <h3>Date: {(new Date()).toISOString().slice(0, 10)}</h3>
                             </div>
                         </div>
                         <div>
                             <div className='col-md-6 offset-md-3 mb-3'>
                                 <input type="text" name='filter' id="filter" value={filterE || ''} onChange={(e) => setFilterE(e.target.value)} className='col-12 text-center form-control' placeholder="Search Student by First Name" required />
                             </div>
-                            <h4 className="text-light text-center">Enrolled Students</h4>
-                            <table className="table table-dark table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Absent</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {enrolled.filter(t => t.studentid.first_name.toLowerCase().includes(filterE.toLowerCase()) || filterE === '').map(
-                                        (student, index) => <tr key={student.id} >
-                                            <td>{index}</td>
-                                            <td>{student.studentid.first_name + ' ' + student.studentid.last_name}</td>
-                                            <td>
-                                                <div key={student.studentid.id}>
-                                                    <input className="form-check-input" type="checkbox" value={student.absent} onChange={() => handleCheck(student.studentid.id)} id="absent" aria-label="absent" />
-                                                </div>
-
-                                            </td>
+                            <div className='table-responsive'>
+                                <table className="table table-dark table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Absent</th>
                                         </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {enrolled.filter(t => t.studentid.first_name.toLowerCase().includes(filterE.toLowerCase()) || filterE === '').map(
+                                            (student, index) => <tr key={student.id} >
+                                                <td>{index + 1}</td>
+                                                <td>{student.studentid.first_name + ' ' + student.studentid.last_name}</td>
+                                                <td>
+                                                    <div key={student.studentid.id}>
+                                                        <input className="form-check-input" type="checkbox" value={student.absent} onChange={() => handleCheck(student.studentid.id)} id="absent" aria-label="absent" />
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

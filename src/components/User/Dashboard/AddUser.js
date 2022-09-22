@@ -78,7 +78,7 @@ class AddUser extends React.Component {
                 </div>
                 <div className='container-fluid d-flex justify-content-center'>
                     <div className='rounded text-center'>
-                        <h2 className='mt-2 mb-1'>New User</h2>
+                        <h2 className='mt-2 mb-1'>Create New User</h2>
                         <div className=' mt-2'>{this.state.error}</div>
                         <div className="text-dark bg-light rounded">
                             <form id="user-form" className="p-4 vw-40 bg-light rounded text-dark" onSubmit={this.handleSubmit}>

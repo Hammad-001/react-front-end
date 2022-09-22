@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios';
-import { useParams, NavLink } from 'react-router-dom';
+import { useParams, NavLink, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../UserAuth';
 
@@ -8,6 +8,9 @@ const MarkMarks = () => {
     const { auth } = useContext(AuthContext);
     let { id } = useParams();
     id = parseInt(id, 10);
+
+    const location = useLocation()
+    const { course } = location.state
 
     const [enrolled, setEnrolled] = useState([]);
     const [filterE, setFilterE] = useState('');
@@ -23,7 +26,6 @@ const MarkMarks = () => {
         })
             .then(response => {
                 setEnrolled(response.data.enrolled)
-                // setEnrolled(response.data.enrolled.map(t => ({ ...t, result: 0 })))
             })
             .catch(error => error.response)
     }, [auth.token, id])
@@ -63,10 +65,8 @@ const MarkMarks = () => {
             )
     }
 
-    const handle = (marks) => {
-        if (marks > 100 || marks < 0) {
-            return true;
-        } return false;
+    const handleCheck = (studentid, e) => {
+        setEnrolled(enrolled.map(t => t.studentid.id === studentid ? { ...t, result: e.target.value } : t))
     }
 
     return (
@@ -106,10 +106,12 @@ const MarkMarks = () => {
                             </div>
                         </div>
                         <div>
+                            <div className=" col-md-11 offset-md-1 mb-2 text-start">
+                                <h3>Course: {course.name}</h3>
+                            </div>
                             <div className='col-md-6 offset-md-3 mb-3'>
                                 <input type="text" name='filter' id="filter" value={filterE || ''} onChange={(e) => setFilterE(e.target.value)} className='col-12 text-center form-control' placeholder="Search Student by First Name" required />
                             </div>
-                            <h4 className="text-light text-center">Enrolled Students</h4>
                             <table className="table table-dark table-striped">
                                 <thead>
                                     <tr>
@@ -125,14 +127,7 @@ const MarkMarks = () => {
                                             <td>{student.studentid.first_name + ' ' + student.studentid.last_name}</td>
                                             <td>
                                                 <div key={student.studentid.id}>
-                                                    <input className="mx-auto rounded" type="number" value={student.result === null ? undefined : student.result} maxLength={3} onKeyPress={(event) => {
-                                                        if (!/[0-9]/.test(event.key) || handle(event.key)) {
-                                                            event.preventDefault();
-                                                        }
-                                                    }} onChange={(
-                                                        event) => student.result = event.target.value
-                                                    }
-                                                        min='0' max='100' id="marks" aria-label="marks" />
+                                                    <input className="mx-auto rounded" type="number" value={student.result === null ? '' : student.result} maxLength={3} onChange={(e) => handleCheck(student.studentid.id, e)} min='0' max='100' id="marks" aria-label="marks" />
                                                 </div>
                                             </td>
                                         </tr>

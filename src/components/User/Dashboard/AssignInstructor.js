@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios';
-import { useParams, NavLink } from 'react-router-dom';
+import { useParams, NavLink, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
+
 import AuthContext from '../UserAuth';
 
-const AssignInstructor = () => {
+const AssignInstructor = (props) => {
     let consta = 0;
     let constu = 0;
+
+    const location = useLocation()
+    const { course } = location.state
+
 
     const { auth } = useContext(AuthContext);
     let { id } = useParams();
@@ -50,7 +55,7 @@ const AssignInstructor = () => {
                 }
             })
                 .then(response => handleLoad())
-                .catch(error => error.response)
+                .catch(error => alert(error.response.data.errors.non_field_errors[0]))
         } else if (assign === false) {
             axios.delete('http://localhost:8000/api/users/instructors/', {
                 data: {
@@ -92,38 +97,42 @@ const AssignInstructor = () => {
                 </div>
 
                 {/* Courses View */}
-
                 <div className="row">
                     <div className="col-12">
-                        <NavLink className='btn btn-light bg-light shadow-none' to='/dashboard/courses'>Back</NavLink>
+                        <NavLink className='btn btn-light bg-light shadow-none mb-2' to='/dashboard/courses'>Back</NavLink>
+                    </div>
+                    <div className="col-12 mb-2 text-center">
+                        <h3>{course.name}</h3>
                     </div>
                     <div className="col-md-6">
                         <div className='col-md-6 offset-md-3 mb-3'>
-                            <input type="text" name='filter' id="filter" value={filterA || ''} onChange={(e) => setFilterA(e.target.value)} className='col-12 text-center form-control' placeholder="Search Teacher by Teacher Name" required />
+                            <input type="text" name='filter' id="filter" value={filterA || ''} onChange={(e) => setFilterA(e.target.value)} className='col-12 text-center form-control' placeholder="Search Teacher by First Name" required />
                         </div>
                         <h4 className="text-light text-center">Assigned Courses</h4>
-                        <table className="table table-dark table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {assigned.filter(t => t.teacherid.first_name.toLowerCase().includes(filterA.toLowerCase()) || filterA === '').map(
-                                    (teacher) => <tr key={teacher.id} >
-                                        <td>{consta++}</td>
-                                        <td>{teacher.teacherid.first_name + ' ' + teacher.teacherid.last_name}</td>
-                                        <td>
-                                            <button onClick={(e) => { setTeacherid(teacher.teacherid.id); setAssign(false); }} type="button" className="btn mx-2 btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Assign">
-                                                UnAssign
-                                            </button>
-                                        </td>
+                        <div className='table-responsive'>
+                            <table className="table table-dark table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Actions</th>
                                     </tr>
-                                )}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {assigned.filter(t => t.first_name.toLowerCase().includes(filterA.toLowerCase()) || filterA === '').map(
+                                        (teacher) => <tr key={teacher.id} >
+                                            <td>{consta++}</td>
+                                            <td>{teacher.first_name + ' ' + teacher.last_name}</td>
+                                            <td>
+                                                <button onClick={(e) => { setTeacherid(teacher.id); setAssign(false); }} type="button" className="btn mx-2 btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Assign">
+                                                    UnAssign
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div className="col-md-6">
                         <div className='col-md-6 offset-md-3 mb-3'>

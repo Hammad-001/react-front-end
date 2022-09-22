@@ -34,10 +34,10 @@ const Login = (props) => {
 
                     setAuth({ usertype, token, first_name });
 
-                    Cookies.set('email', email, { expires: 1, sameSite: 'strict' });
-                    Cookies.set('token', token, { expires: 1, sameSite: 'strict' });
-                    Cookies.set('first_name', first_name, { expires: 1, sameSite: 'strict' });
-                    Cookies.set('usertype', usertype, { expires: 1, sameSite: 'strict' });
+                    Cookies.set('email', email, { expires: 1 });
+                    Cookies.set('token', token, { expires: 1 });
+                    Cookies.set('first_name', first_name, { expires: 1 });
+                    Cookies.set('usertype', usertype, { expires: 1 });
 
                     document.getElementById('login-form').reset();
                     setError(<p className="text-danger">User Logged in Successfully!</p>)

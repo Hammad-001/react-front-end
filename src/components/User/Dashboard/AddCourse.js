@@ -18,7 +18,6 @@ class AddCourse extends React.Component {
             code: form.get('code'),
             name: form.get('name'),
         }
-        console.log(data.code.length)
         if (data.code.length > 8 || data.code.length < 6) {
             this.setState({ error: <p className="text-danger">Course code should be between 6 to 8 letters!</p> })
         }
@@ -51,7 +50,7 @@ class AddCourse extends React.Component {
             <>
                 <div className='container-fluid d-flex justify-content-center'>
                     <div className='rounded text-center'>
-                        <h2 className='mt-5 mb-1'>New Course</h2>
+                        <h2 className='mt-5 mb-1'>Create New Course</h2>
                         <div className=' mt-3'>{this.state.error}</div>
                         <div className="text-dark bg-light rounded">
                             <form id="course-form" className="p-4 vw-40 bg-light rounded text-dark" onSubmit={this.handleSubmit}>
