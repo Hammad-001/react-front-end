@@ -1,9 +1,8 @@
 import favicon from '../../assets/images/favicon.ico'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useContext, useCallback } from 'react';
+import { useContext } from 'react';
 import AuthContext from '../others/UserAuth';
-import Cookies from 'js-cookie'
+import { handleLogout } from '../others/axiosrequests';
 
 const PublicNavbar = () => {
     return (
@@ -38,21 +37,15 @@ const PrivateNavbar = () => {
     const navigate = useNavigate();
     const { auth, setAuth } = useContext(AuthContext);
 
-    const handleLogout = useCallback(async () => {
-        axios.get('http://localhost:8000/api/users/logout/', { headers: { 'Authorization': 'Bearer ' + auth.token } })
-            .then(response => {
-                Cookies.remove('email')
-                Cookies.remove('usertype')
-                Cookies.remove('first_name')
-                Cookies.remove('token')
-                setAuth({})
-                navigate("/login", { replace: true })
+    // Perform Logout Functionality
+    const handle = (e) => {
+        const submit = handleLogout(auth.token);
+        if (submit) {
+            setAuth({})
+            navigate("/login", { replace: true })
+        }
+    }
 
-            }).catch(err => {
-                alert("Some Internal Server Error Occured! \n Cannot logout!!")
-            })
-    }, [auth.token, navigate, setAuth])
-    
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -72,7 +65,7 @@ const PrivateNavbar = () => {
                                 <NavLink className="nav-link" to="/u/users" hidden={auth.usertype === 'teacher' || auth.usertype === 'student'}>Users</NavLink>
                             </li>
                             <li className="nav-item">
-                                <button className="btn btn-dark w-100 shadow-none nav-link" onClick={handleLogout}>Logout</button>
+                                <button className="btn btn-dark w-100 shadow-none nav-link" onClick={handle}>Logout</button>
                             </li>
                         </ul>
                     </div>
