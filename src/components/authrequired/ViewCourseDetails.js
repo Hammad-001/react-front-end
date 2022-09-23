@@ -1,33 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react'
-import axios from 'axios';
+import handleCourseDetails from '../others/requests/authrequests/courserequests';
 import AuthContext from '../others/UserAuth';
 
 const ViewCourseDetails = (props) => {
     const { auth } = useContext(AuthContext);
     const [courseDetail, setCourseDetail] = useState()
+    const [isLoading, setIsLoading] = useState(true)
     const [view, setView] = useState(false)
 
+
     useEffect(() => {
-        const getCourseDetails = async (e) => {
-            axios.get('http://localhost:8000/api/users/courses/', {
-                params: {
-                    courseid: props.course.id
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + auth.token
-                }
-            })
-                .then(response => {
-                    setCourseDetail(response.data.coursedetail)
-                })
-                .catch(error => error.response)
-        }
+        handleCourseDetails(props.course.id, auth.token, setCourseDetail, setIsLoading);
+    }, [auth.token, props.course.id, isLoading])
 
-        getCourseDetails();
-    }, [auth.token, props.course.id])
-
-
-    if (courseDetail) {
+    if (!isLoading) {
         let count = 1;
         return (
             <div className='col-md-3 mb-2 offset-md-1'>
