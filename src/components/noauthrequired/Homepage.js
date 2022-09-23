@@ -7,7 +7,6 @@ const Homepage = (props) => {
                 <div className="container">
                     <div className="text-center">
                         <h2 className="section-heading text-uppercase">My LMS App</h2>
-                        <h3 className="section-subheading text-muted">Created with React and Django.</h3>
                     </div>
                     <div className="row text-center">
                         <div className="col-md-4">
@@ -40,15 +39,15 @@ const Homepage = (props) => {
             <div className="container">
                 <div className="text-center mt-5">
                     <h2 className="section-heading text-uppercase">About</h2>
-                    <h3 className="section-subheading text-muted">First [ React + Django ] Project</h3>
+                    <h3 className="section-subheading text-muted">[ React + Django ] Developer</h3>
                     <div className="py-2 mb-0">
                         <div className="container">
                             <div className="row text-center align-items-center">
                                 <div className="col-md-6 col-sm-6 my-3">
-                                    Name: <p>Muhammad Hammad Faisal</p>
+                                    Developer Name <p>Muhammad Hammad Faisal</p>
                                 </div>
                                 <div className="col-md-6 col-sm-6 my-3">
-                                    Email: <p>hammadfaisal178@gmail.com</p>
+                                    Developer Email <p>hammadfaisal178@gmail.com</p>
                                 </div>
                             </div>
                             <div className="col-12 my-3">
