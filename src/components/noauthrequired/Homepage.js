@@ -50,7 +50,7 @@ const Homepage = (props) => {
                                     Developer Email <p>hammadfaisal178@gmail.com</p>
                                 </div>
                             </div>
-                            <div className="col-12 my-3">
+                            <div className="col-12 mt-5">
                                 <div className="text-center">Copyright &copy; MY LMS App 2022</div>
                             </div>
                         </div>
