@@ -13,14 +13,14 @@ const Courses = (props) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const [filter, setFilter] = useState('');
-    const [filteru, setFilteru] = useState(false);
-    const [filtere, setFiltere] = useState(false);
+    const [filteru, setFilteru] = useState('');
+    const [filtere, setFiltere] = useState('');
 
     const [id, setId] = useState(null);
 
-    const [courses, setCourses] = useState(true);
-    const [enrolled, setEnrolled] = useState(true);
-    const [attendance, setAttendance] = useState(true);
+    const [courses, setCourses] = useState();
+    const [enrolled, setEnrolled] = useState();
+    const [attendance, setAttendance] = useState();
 
     const [course, setCourse] = useState({
         id: null,
@@ -50,30 +50,14 @@ const Courses = (props) => {
         setView(false);
     }
 
-    const AdminFilter = () => {
-        if (filter === '') {
-            Courses = courses
-        } else {
-            Courses = courses.filter(f => f.name.toLowerCase().includes(filter.toLowerCase()) || filter === '')
-        }
-    }
-    const TeacherFilter = () => {
-        if (filter === '') {
-            Courses = courses
-        } else {
-            Courses = courses.filter(f => f.courseid.name.toLowerCase().includes(filter.toLowerCase()) || filter === '')
-        }
-    }
-
-    const StudentFilter = () => {
-        Courses = courses.filter(f => f.name.toLowerCase().includes(filteru.toLowerCase()) || filteru === '')
-        Enrolled = enrolled.filter(f => f.name.toLowerCase().includes(filtere.toLowerCase()) || filtere === '')
-    }
-
     if (usertype === 'admin') {
         if (!isLoading) {
-            AdminFilter()
-            Courses = courses.map(
+            if (filter === '') {
+                Courses = courses
+            } else {
+                Courses = courses.filter(f => f.name.toLowerCase().includes(filter.toLowerCase()) || filter === '')
+            }
+            Courses = Courses.map(
                 (course) => <tr key={course.id} >
                     <td>{count++}</td>
                     <td>{course.code}</td>
@@ -106,7 +90,6 @@ const Courses = (props) => {
             )
             return (
                 <div className='container-fluid'>
-                    {/* <!-- Button trigger modal --> */}
 
                     {/* <!-- Modal --> */}
                     <div className="modal fade" id="Delete" tabIndex="-1" aria-labelledby="DeleteModal" aria-hidden="true">
@@ -190,7 +173,8 @@ const Courses = (props) => {
         }
     } else if (usertype === 'student') {
         if (!isLoading) {
-            StudentFilter()
+            Courses = courses.filter(f => f.name.toLowerCase().includes(filteru.toLowerCase()) || filteru === '')
+            Enrolled = enrolled.filter(f => f.name.toLowerCase().includes(filtere.toLowerCase()) || filtere === '')
             if (attendance) {
                 Attendance = attendance.map(date => <tr key={date.id} >
                     <td>{counta++}</td>
@@ -200,7 +184,7 @@ const Courses = (props) => {
                     <td>{date.isabsent ? 'Absent' : 'Present'}</td>
                 </tr>)
             }
-            Courses = courses.map(
+            Courses = Courses.map(
                 (course) => <tr key={course.id} >
                     <td>{counte++}</td>
                     <td>{course.code}</td>
@@ -213,7 +197,7 @@ const Courses = (props) => {
                     </td>
                 </tr>
             )
-            Enrolled = enrolled.map(
+            Enrolled = Enrolled.map(
                 (course) => <tr key={course.id} >
                     <td>{countu++}</td>
                     <td>{course.code}</td>
@@ -221,7 +205,7 @@ const Courses = (props) => {
                     <td>{course.instructors.length === 0 ? 'None' : course.instructors[0].first_name}</td>
                     <td>{course.result}</td>
                     <td>
-                        <button onClick={() => { setId(course.id); handleCourseAttendance(course.id) }} type="button" className="btn mx-2 mb-2 btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Attendance">
+                        <button onClick={() => { setId(course.id); handleCourseAttendance(course.id, token, setAttendance) }} type="button" className="btn mx-2 mb-2 btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#Attendance">
                             Attendance
                         </button>
                         {course.result ?
@@ -235,7 +219,6 @@ const Courses = (props) => {
             )
 
             return (
-
                 <div className='container-fluid'>
                     {/* <!-- Button Toggle --> */}
                     <button className='btn btn-light bg-light shadow-none' onClick={() => setStudentView(!StudentView)}>{StudentView ? 'View UnEnrolled Courses' : 'View Enrolled Courses'}</button>
@@ -346,8 +329,12 @@ const Courses = (props) => {
         }
     } else if (usertype === 'teacher') {
         if (!isLoading) {
-            TeacherFilter()
-            Courses = courses.map(
+            if (filter === '') {
+                Courses = courses
+            } else {
+                Courses = courses.filter(f => f.courseid.name.toLowerCase().includes(filter.toLowerCase()) || filter === '')
+            }
+            Courses = Courses.map(
                 (course) => <tr key={course.courseid.id} >
                     <td>{count++}</td>
                     <td>{course.courseid.code}</td>
