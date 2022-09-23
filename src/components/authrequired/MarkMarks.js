@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams, NavLink, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../others/UserAuth';
+import { handleAddMarks, handleLoadMarks } from '../others/requests/authrequests/instructorsrequests';
 
 const MarkMarks = () => {
     const { auth } = useContext(AuthContext);
@@ -14,63 +15,19 @@ const MarkMarks = () => {
 
     const [enrolled, setEnrolled] = useState([]);
     const [filterE, setFilterE] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
 
-    const handleLoad = useCallback(async () => {
-        await axios.get('http://localhost:8000/api/users/courses/', {
-            params: {
-                courseid: id
-            },
-            headers: {
-                'Authorization': 'Bearer ' + auth.token
-            }
-        })
-            .then(response => {
-                setEnrolled(response.data.enrolled)
-            })
-            .catch(error => error.response)
-    }, [auth.token, id])
 
     useEffect(() => {
-        handleLoad();
-    }, [handleLoad])
-
-    const handleMarks = useCallback(async () => {
-        let marks = []
-        for (let i = 0; i < enrolled.length; i++) {
-            marks.push({
-                courseid: id,
-                id: enrolled[i].id,
-                year: enrolled[i].year,
-                studentid: enrolled[i].studentid.id,
-                result: parseInt(enrolled[i].result)
-            })
-        }
-        axios.patch('http://localhost:8000/api/users/enrolled/',
-            marks,
-            {
-                headers: { 'Authorization': 'Bearer ' + auth.token }
-            }
-        )
-            .then(response => {
-                alert(response.data.msg);
-                handleLoad();
-            })
-            .catch(error => {
-                if (error.response) {
-                    alert(error.response.data?.msg)
-                } else {
-                    alert('Unknows Error Occured!')
-                }
-            }
-            )
-    }, [handleLoad, auth.token, enrolled, id])
+        handleLoadMarks(id, auth.token, setEnrolled, setIsLoading);
+    }, [id, auth.token])
 
     const handleCheck = (studentid, e) => {
         setEnrolled(enrolled.map(t => t.studentid.id === studentid ? { ...t, result: e.target.value } : t))
     }
 
     return (
-        (enrolled) ?
+        (!isLoading) ?
             <>
                 <div className='container-fluid'>
                     {/* <!-- Button trigger modal --> */}
@@ -88,7 +45,7 @@ const MarkMarks = () => {
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-light" data-bs-dismiss="modal">No</button>
-                                    <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={(e) => handleMarks()}>Yes</button>
+                                    <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={(e) => handleAddMarks(enrolled, id, auth.token, setEnrolled, setIsLoading)}>Yes</button>
                                 </div>
                             </div>
                         </div>

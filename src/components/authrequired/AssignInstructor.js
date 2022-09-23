@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import axios from 'axios';
+import React, { useState, useEffect, useContext } from 'react'
 import { useParams, NavLink, useLocation } from 'react-router-dom';
-import { useContext } from 'react';
-
 import AuthContext from '../others/UserAuth';
+import handleLoadInstructors, { handleAssignInstructors } from '../others/requests/authrequests/instructorsrequests';
 
 const AssignInstructor = (props) => {
     let consta = 0;
@@ -12,68 +10,28 @@ const AssignInstructor = (props) => {
     const location = useLocation()
     const { course } = location.state
 
-    
+
     const { auth } = useContext(AuthContext);
     let { id } = useParams();
     id = parseInt(id, 10)
 
     const [assigned, setAssigned] = useState([]);
     const [unassigned, setUnassigned] = useState([]);
+
     const [teacherid, setTeacherid] = useState(null);
-    const [assign, setAssign] = useState(false);
+
     const [filterA, setFilterA] = useState('');
     const [filterU, setFilterU] = useState('');
 
-    const handleLoad = useCallback(async () => {
-        await axios.get('http://localhost:8000/api/users/instructors/', {
-            params: {
-                courseid: id,
-            },
-            headers: {
-                'Authorization': 'Bearer ' + auth.token
-            }
-        })
-            .then(response => {
-                setAssigned(response.data.assigned);
-                setUnassigned(response.data.unassigned);
-            })
-            .catch(error => error.response)
-    }, [auth.token, id])
+    const [assign, setAssign] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        handleLoad();
-    }, [handleLoad])
-
-    const handleAssign = useCallback(async () => {
-        if (assign === true) {
-            await axios.post('http://localhost:8000/api/users/instructors/', {
-                courseid: id,
-                teacherid: teacherid
-            }, {
-                headers: {
-                    'Authorization': 'Bearer ' + auth.token
-                }
-            })
-                .then(response => handleLoad())
-                .catch(error => alert(error.response.data.errors.non_field_errors[0]))
-        } else if (assign === false) {
-            axios.delete('http://localhost:8000/api/users/instructors/', {
-                data: {
-                    courseid: id,
-                    teacherid: teacherid
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + auth.token
-                }
-            })
-                .then(response => handleLoad())
-                .catch(error => error.response)
-        }
-    }, [assign, auth.token, id, handleLoad, teacherid])
-
+        handleLoadInstructors(id, auth.token, setAssigned, setUnassigned, setIsLoading);
+    }, [id, auth.token])
 
     return (
-        (assigned && unassigned) ?
+        (!isLoading) ?
             <div className='container-fluid'>
                 {/* <!-- Button trigger modal --> */}
 
@@ -90,7 +48,7 @@ const AssignInstructor = (props) => {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-light" data-bs-dismiss="modal">No</button>
-                                <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={(e) => handleAssign()}>Yes</button>
+                                <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={(e) => handleAssignInstructors(assign, id, teacherid, auth.token, setAssigned, setUnassigned, setIsLoading)}>Yes</button>
                             </div>
                         </div>
                     </div>
