@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { handleForgotPassword } from '../others/axiosrequests';
+import { handleForgotPassword } from '../others/requests/nonauthrequest';
 
 const ForgotPassword = (props) => {
     const [error, setError] = useState(<p className="text-light">Please Enter Your Email!</p>);

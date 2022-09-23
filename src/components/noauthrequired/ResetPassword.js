@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, Navigate, useParams } from 'react-router-dom';
-import { handleResetPassword } from '../others/axiosrequests';
+import { handleResetPassword } from '../others/requests/nonauthrequest';
 
 const ResetPassword = (props) => {
     const { id, token } = useParams();

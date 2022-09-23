@@ -2,7 +2,7 @@ import favicon from '../../assets/images/favicon.ico'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../others/UserAuth';
-import { handleLogout } from '../others/axiosrequests';
+import { handleLogout } from '../others/requests/nonauthrequest';
 
 const PublicNavbar = () => {
     return (
