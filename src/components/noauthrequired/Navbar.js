@@ -39,11 +39,7 @@ const PrivateNavbar = () => {
 
     // Perform Logout Functionality
     const handle = (e) => {
-        const submit = handleLogout(auth.token);
-        if (submit) {
-            setAuth({})
-            navigate("/login", { replace: true })
-        }
+        handleLogout(auth.token, setAuth, navigate);
     }
 
     return (

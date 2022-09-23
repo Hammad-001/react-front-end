@@ -126,18 +126,18 @@ const handleChangePassword = (e, setError, token) => {
 }
 
 // For Logout
-const handleLogout = (token) => {
+const handleLogout = (token, setAuth, navigate) => {
     axios.get('http://localhost:8000/api/users/logout/', { headers: { 'Authorization': 'Bearer ' + token } })
         .then(response => {
             Cookies.remove('email')
             Cookies.remove('usertype')
             Cookies.remove('first_name')
             Cookies.remove('token')
-            return true;
+            setAuth({})
+            navigate("/login", { replace: true })
 
         }).catch(err => {
             alert("Some Internal Server Error Occured! \n Cannot logout!!")
-            return false;
         })
 }
 
