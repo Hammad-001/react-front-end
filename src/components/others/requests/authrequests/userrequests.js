@@ -17,7 +17,7 @@ const handleLoadUser = (usertype, token, setUsers, setIsLoading) => {
 }
 
 // Create User
-const handleCreateUser = async (e, token, setEmail, setData, setError) => {
+const handleCreateUser = (e, token, setEmail, setData, setError) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const data = {
@@ -45,7 +45,7 @@ const handleCreateUser = async (e, token, setEmail, setData, setError) => {
 }
 
 // Handle Create User That Already Exists
-const handleCreateUserExits = async (val, token, setError, email, data) => {
+const handleCreateUserExits = (val, token, setError, email, data) => {
     axios.put('http://localhost:8000/api/users/users/', { email: email, data: data, change: val }, {
         headers: {
             'Authorization': 'Bearer ' + token
@@ -59,20 +59,21 @@ const handleCreateUserExits = async (val, token, setError, email, data) => {
 }
 
 //  Update User Record
-const handleUpdateUser = (e, usertype, token, user, setIsLoading) => {
+const handleUpdateUser = (e, usertype, token, user, setUsers, setIsLoading) => {
     e.preventDefault();
     axios.patch('http://localhost:8000/api/users/users/', user, {
         headers: {
             'Authorization': 'Bearer ' + token
         }
     }).then(response => {
-        handleLoadUser(usertype, token)
+        document.getElementById('update-form').reset();
+        handleLoadUser(usertype, token, setUsers, setIsLoading)
         setIsLoading(true);
     }).catch(error => error.response)
 }
 
 // Delete User Record
-const handleDeleteUser = (e, usertype, id, token, setIsLoading) => {
+const handleDeleteUser = (e, usertype, id, token, setUsers, setIsLoading) => {
     e.preventDefault();
     axios.delete('http://localhost:8000/api/users/users/', {
         data: {
@@ -82,7 +83,7 @@ const handleDeleteUser = (e, usertype, id, token, setIsLoading) => {
             'Authorization': 'Bearer ' + token
         }
     }).then(response => {
-        handleLoadUser(usertype, token)
+        handleLoadUser(usertype, token, setUsers, setIsLoading)
         setIsLoading(true);
     }).catch(error => error.response)
 }
@@ -125,7 +126,7 @@ const handleChangePassword = (e, setError, token) => {
 }
 
 // For Logout
-const handleLogout = async (token) => {
+const handleLogout = (token) => {
     axios.get('http://localhost:8000/api/users/logout/', { headers: { 'Authorization': 'Bearer ' + token } })
         .then(response => {
             Cookies.remove('email')
