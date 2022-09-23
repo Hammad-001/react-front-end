@@ -92,22 +92,5 @@ const handleResetPassword = (e, setError, id, token) => {
     }
 }
 
-
-// For Logout
-const handleLogout = async (token) => {
-    axios.get('http://localhost:8000/api/users/logout/', { headers: { 'Authorization': 'Bearer ' + token } })
-        .then(response => {
-            Cookies.remove('email')
-            Cookies.remove('usertype')
-            Cookies.remove('first_name')
-            Cookies.remove('token')
-            return true;
-
-        }).catch(err => {
-            alert("Some Internal Server Error Occured! \n Cannot logout!!")
-            return false;
-        })
-}
-
 export default handleLogin
-export { handleForgotPassword, handleLogout, handleResetPassword }
+export { handleForgotPassword, handleResetPassword }
