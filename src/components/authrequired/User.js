@@ -32,19 +32,26 @@ const User = (props) => {
         setUser({ ...user, [name]: value })
     }
 
-    const handleFilter = async (e) => {
+    // handle User Filter based on usertype
+    const handleFilter = (e) => {
         e.preventDefault();
         handleLoadUser(usertype, token, setUsers, setIsLoading);
     }
 
-    // User => for filtering temp variable
-    // user => have original users data
-    if (!isLoading) {
+    // Filter Users
+    const userfilter =()=>{
         if (filter === '') {
             User = users
         } else {
             User = users.filter(f => f.first_name.toLowerCase().includes(filter.toLowerCase()) || filter === '')
         }
+        return User
+    }
+
+    // User => for filtering temp variable
+    // user => have original users data
+    if (!isLoading) {
+        User = userfilter()
         User = User.map(
             (user) => <tr key={user.id} >
                 <td>{count++}</td>
