@@ -34,7 +34,7 @@ const MarkAttendance = () => {
         handleLoad();
     }, [handleLoad])
 
-    const handleAttendance = async () => {
+    const handleAttendance = useCallback(async () => {
         axios.post('http://localhost:8000/api/users/attendance/',
             { enrolled: enrolled, courseid: id },
             {
@@ -55,7 +55,7 @@ const MarkAttendance = () => {
                 }
             }
             )
-    }
+    }, [handleLoad, auth.token, enrolled, id])
 
     const handleCheck = (studentid) => {
         setEnrolled(enrolled.map(t => t.studentid.id === studentid ? { ...t, absent: !t.absent } : t))

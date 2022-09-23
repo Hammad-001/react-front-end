@@ -1,7 +1,7 @@
 import favicon from '../../assets/images/favicon.ico'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useContext } from 'react';
+import { useContext, useCallback } from 'react';
 import AuthContext from '../others/UserAuth';
 import Cookies from 'js-cookie'
 
@@ -37,10 +37,9 @@ const PublicNavbar = () => {
 const PrivateNavbar = () => {
     const navigate = useNavigate();
     const { auth, setAuth } = useContext(AuthContext);
-    const headers = { 'Authorization': 'Bearer ' + auth.token }
 
-    const handleLogout = async () => {
-        axios.get('http://localhost:8000/api/users/logout/', { headers })
+    const handleLogout = useCallback(async () => {
+        axios.get('http://localhost:8000/api/users/logout/', { headers: { 'Authorization': 'Bearer ' + auth.token } })
             .then(response => {
                 Cookies.remove('email')
                 Cookies.remove('usertype')
@@ -52,7 +51,8 @@ const PrivateNavbar = () => {
             }).catch(err => {
                 alert("Some Internal Server Error Occured! \n Cannot logout!!")
             })
-    }
+    }, [auth.token, navigate, setAuth])
+    
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">

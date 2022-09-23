@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import axios from 'axios';
-import { useContext } from 'react';
+import { useContext, useCallback } from 'react';
 import AuthContext from '../others/UserAuth';
 
 const ChangePassword = () => {
   const { auth } = useContext(AuthContext);
   const [error, setError] = useState(<p className="text-light">Please Enter New Password!</p>);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const password1 = form.get('password1')
@@ -34,7 +34,8 @@ const ChangePassword = () => {
           }
         });
     }
-  }
+  }, [auth.token])
+
   return (
     <>
       <div className='container-fluid d-flex justify-content-center'>

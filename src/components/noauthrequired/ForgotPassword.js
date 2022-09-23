@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 
 const ForgotPassword = (props) => {
     const [error, setError] = useState(<p className="text-light">Please Enter Your Email!</p>);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
         const form = new FormData(e.currentTarget);
         const email = form.get('email');
@@ -22,7 +22,7 @@ const ForgotPassword = (props) => {
                     setError(<p className="text-danger">User does not exists!</p>)
                 });
         }
-    }
+    }, [])
 
     return (
         <div className='container-fluid d-flex justify-content-center'>

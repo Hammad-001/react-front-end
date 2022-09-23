@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { NavLink, Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -6,7 +6,7 @@ const ResetPassword = (props) => {
     const { id, token } = useParams();
     const [error, setError] = useState(<p className="text-light">Please Enter New Password!</p>);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = useCallback((e) => {
         e.preventDefault();
         const form = new FormData(e.currentTarget);
         const password1 = form.get('password1')
@@ -32,7 +32,7 @@ const ResetPassword = (props) => {
                     }
                 });
         }
-    }
+    }, [id, token])
 
     return (
         <div className='container-fluid d-flex justify-content-center'>

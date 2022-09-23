@@ -12,7 +12,7 @@ const AssignInstructor = (props) => {
     const location = useLocation()
     const { course } = location.state
 
-
+    
     const { auth } = useContext(AuthContext);
     let { id } = useParams();
     id = parseInt(id, 10)
@@ -44,7 +44,7 @@ const AssignInstructor = (props) => {
         handleLoad();
     }, [handleLoad])
 
-    const handleAssign = async () => {
+    const handleAssign = useCallback(async () => {
         if (assign === true) {
             await axios.post('http://localhost:8000/api/users/instructors/', {
                 courseid: id,
@@ -69,7 +69,7 @@ const AssignInstructor = (props) => {
                 .then(response => handleLoad())
                 .catch(error => error.response)
         }
-    }
+    }, [assign, auth.token, id, handleLoad, teacherid])
 
 
     return (

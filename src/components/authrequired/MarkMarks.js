@@ -34,7 +34,7 @@ const MarkMarks = () => {
         handleLoad();
     }, [handleLoad])
 
-    const handleMarks = async () => {
+    const handleMarks = useCallback(async () => {
         let marks = []
         for (let i = 0; i < enrolled.length; i++) {
             marks.push({
@@ -63,7 +63,7 @@ const MarkMarks = () => {
                 }
             }
             )
-    }
+    }, [handleLoad, auth.token, enrolled, id])
 
     const handleCheck = (studentid, e) => {
         setEnrolled(enrolled.map(t => t.studentid.id === studentid ? { ...t, result: e.target.value } : t))
