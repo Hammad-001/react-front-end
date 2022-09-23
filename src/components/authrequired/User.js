@@ -107,7 +107,7 @@ const User = (props) => {
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
-                                <form id="update-form" className="bg-dark rounded" onSubmit={(e) => handleUpdateUser(e, usertype, token, user)}>
+                                <form id="update-form" className="bg-dark rounded">
                                     <select className="form-select bg-dark text-light text-center" onChange={handleChange} value={user.usertype} name='usertype' aria-label="Select Role">
                                         <option value="admin">Admin</option>
                                         <option value="teacher">Teacher</option>
