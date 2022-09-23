@@ -32,6 +32,7 @@ const Courses = (props) => {
     let countu = 1;
     let counta = 1;
     let count = 1;
+    
     let Courses = null;
     let Enrolled = null;
     let Attendance = null;
