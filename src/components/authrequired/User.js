@@ -24,7 +24,7 @@ const User = (props) => {
 
     useEffect(() => {
         handleLoadUser(usertype, token, setUsers, setIsLoading)
-    }, [token, usertype, isLoading])
+    }, [token, usertype])
 
     const handleChange = (e) => {
         const name = e.target.name;
@@ -92,7 +92,7 @@ const User = (props) => {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={(e) => handleDeleteUser(e, usertype, id, token, setIsLoading)}>Delete</button>
+                                <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={(e) => handleDeleteUser(e, usertype, id, token, setUsers, setIsLoading)}>Delete</button>
                             </div>
                         </div>
                     </div>
@@ -137,7 +137,7 @@ const User = (props) => {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={(e) => handleUpdateUser(e, usertype, token, user, setIsLoading)}>Save changes</button>
+                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={(e) => handleUpdateUser(e, usertype, token, user, setUsers, setIsLoading)}>Save changes</button>
                             </div>
                         </div>
                     </div>
