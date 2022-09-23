@@ -1,22 +1,15 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
-import axios from 'axios';
+import { handleLoadProfile } from '../others/requests/authrequests/userrequests';
 
 const Profile = (props) => {
   const token = props.token;
   const [profile, setProfile] = useState(null);
 
-  const handleLoad = useCallback((props) => {
-    axios.get('http://localhost:8000/api/users/profile/', {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    }).then(response => { setProfile(response.data) }).catch(error => error.response)
-  }, [token])
-  
+
   useEffect(() => {
-    handleLoad();
-  }, [handleLoad])
+    handleLoadProfile(token, setProfile);
+  }, [token])
 
   if (profile) {
     return (
